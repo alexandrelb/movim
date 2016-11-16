@@ -8,15 +8,13 @@ var Avatar = {
             reader.readAsDataURL(f);
 
             reader.onload = function (ev) {
-                var img = new Image();
-                img.src = ev.target.result;
-                Avatar.preview(img.src);
+                Avatar.preview(ev.target.result);
             };
         };
     },
     preview : function(src) {
         var canvas = document.createElement('canvas');
-        width = height = canvas.width = canvas.height = 410;
+        width = height = canvas.width = canvas.height = 350;
         var image = new Image();
         image.src = src;
         image.onload = function(){
@@ -31,12 +29,12 @@ var Avatar = {
                 }
             }
 
-            var base64 = canvas.toDataURL('image/jpeg', 0.7);
+            var base64 = canvas.toDataURL('image/jpeg', 0.95);
 
             var preview = document.querySelector('form[name=avatarform] img');
 
             var list = document.querySelector('form[name=avatarform] ul');
-            if(list) list.style.display = 'none';
+            if(list) MovimUtils.hideElement(list);
 
             var input = document.querySelector('input[name="photobin"]');
 

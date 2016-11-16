@@ -1,6 +1,17 @@
-<br />
-<h2>{$c->__('explore.explore')}</h2>
+<header>
+    <ul class="list middle">
+        <li>
+            <span class="primary icon active gray on_mobile" onclick="MovimTpl.hidePanel()">
+                <i class="zmdi zmdi-arrow-back"></i>
+            </span>
+            <span class="control"></span>
+            <p class="line">
+                {$c->__('explore.explore')}
+            </p>
+        </li>
+    </ul>
+</header>
 
-<ul id="public_list" class="list flex card shadow active">
+<div id="public_list">
     {$users}
-</ul>
+</div>

@@ -1,23 +1,5 @@
 <?php
 
-/**
- * @package Widgets
- *
- * @file Logout.php
- * This file is part of MOVIM.
- *
- * @brief The little logout widget.
- *
- * @author Guillaume Pasquet <etenil@etenilsrealm.nl>
- *
- * @version 1.0
- * @date 20 October 2010
- *
- * Copyright (C)2010 MOVIM project
- *
- * See COPYING for licensing information.
- */
-
 use Moxl\Xec\Action\Presence\Chat;
 use Moxl\Xec\Action\Presence\Away;
 use Moxl\Xec\Action\Presence\DND;
@@ -53,26 +35,29 @@ class Presence extends \Movim\Widget\Base
     function onMyPresence($packet)
     {
         $html = $this->preparePresence();
-        RPC::call('movim_fill', 'presence_widget', $html);
+        RPC::call('MovimTpl.fill', '#presence_widget', $html);
         Notification::append(null, $this->__('status.updated'));
         RPC::call('Presence.refresh');
-        RPC::call('movim_remove_class', '#presence_widget', 'unfolded');
+        RPC::call('MovimUtils.removeClass', '#presence_widget', 'unfolded');
+    }
+
+    function ajaxClear()
+    {
+        $pd = new \Modl\PresenceDAO();
+        $pd->clearPresence();
     }
 
     function ajaxSet($form = false)
     {
         if($form == false) {
             // We update the cache with our status and presence
-            $presence = Cache::c('presence');
+            $presence = \Movim\Cache::c('presence');
 
             $value = $presence['show'];
             $status = $presence['status'];
 
             if($presence == null || !isset($presence['show']) || $presence['show'] == '')
                 $value = 'chat';
-
-            if($presence == null|| !isset($presence['status']) || $presence['status'] == '')
-                $status = $this->__('status.online');
         } else {
             $status = $form['status'];
             $value = $form['value'];
@@ -99,12 +84,12 @@ class Presence extends \Movim\Widget\Base
             }
         }
 
-        Cache::c(
+        \Movim\Cache::c(
             'presence',
-            array(
+            [
                 'status' => $status,
                 'show' => $value
-                )
+            ]
         );
     }
 
@@ -126,7 +111,7 @@ class Presence extends \Movim\Widget\Base
     function ajaxGetPresence()
     {
         $html = $this->preparePresence();
-        RPC::call('movim_fill', 'presence_widget', $html);
+        if($html) RPC::call('MovimTpl.fill', '#presence_widget', $html);
     }
 
     function ajaxConfigGet() {
@@ -192,6 +177,13 @@ class Presence extends \Movim\Widget\Base
         $pd = new \Modl\PresenceDAO;
 
         $session = \Session::start();
+
+        // If the user is still on a logued-in page after a daemon restart
+        if($session->get('jid') == false) {
+            RPC::call('MovimUtils.disconnect');
+            return false;
+        }
+
         $presence = $pd->getPresence($session->get('jid'), $session->get('resource'));
 
         $presencetpl = $this->tpl();

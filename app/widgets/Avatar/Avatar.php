@@ -1,23 +1,9 @@
 <?php
 
-/**
- * @package Widgets
- *
- * @file Avatar.php
- * This file is part of Movim.
- *
- * @brief A widget which display all the infos of a contact, vcard 4 version
- *
- * @author Timothée    Jaussoin <edhelas_at_gmail_dot_com>
-
- * Copyright (C)2013 MOVIM project
- *
- * See COPYING for licensing information.
- */
-
 use Moxl\Xec\Action\Avatar\Get;
 use Moxl\Xec\Action\Avatar\Set;
-use forxer\Gravatar\Gravatar;
+
+use Movim\Picture;
 
 class Avatar extends \Movim\Widget\Base
 {
@@ -38,17 +24,17 @@ class Avatar extends \Movim\Widget\Base
         $me = $packet->content;
         $html = $this->prepareForm($me);
 
-        RPC::call('movim_fill', 'avatar_form', $html);
+        RPC::call('MovimTpl.fill', '#avatar_form', $html);
         Notification::append(null, $this->__('avatar.updated'));
     }
 
     function onMyAvatarError()
     {
-        $cd = new \modl\ContactDAO();
+        $cd = new \Modl\ContactDAO;
         $me = $cd->get();
         $html = $this->prepareForm($me);
 
-        RPC::call('movim_fill', 'avatar_form', $html);
+        RPC::call('MovimTpl.fill', '#avatar_form', $html);
         Notification::append(null, $this->__('avatar.not_updated'));
     }
 
@@ -63,18 +49,9 @@ class Avatar extends \Movim\Widget\Base
 
         $avatarform->assign('me',       $me);
 
-        if(isset($me->email)) {
-            $result = requestURL(Gravatar::profile($me->email, 'json'), 3);
-            $obj = json_decode($result);
-            if($obj != 'User not found') {
-                $avatarform->assign('gravatar_bin', base64_encode(requestURL('http://www.gravatar.com/avatar/'.$obj->entry[0]->hash.'?s=250')));
-                $avatarform->assign('gravatar', $obj);
-            }
-        }
-
         $avatarform->assign(
             'submit',
-            $this->call('ajaxSubmit', "movim_form_to_json('avatarform')")
+            $this->call('ajaxSubmit', "MovimUtils.formToJson('avatarform')")
             );
 
         return $avatarform->draw('_avatar_form', true);
@@ -90,7 +67,7 @@ class Avatar extends \Movim\Widget\Base
 
     function ajaxDisplay()
     {
-        $cd = new \modl\ContactDAO();
+        $cd = new \Modl\ContactDAO;
         $me = $cd->get();
 
         RPC::call('MovimTpl.fill', '#avatar_form', $this->prepareForm($me));
@@ -98,8 +75,16 @@ class Avatar extends \Movim\Widget\Base
 
     function ajaxSubmit($avatar)
     {
+        $p = new Picture;
+        $p->fromBase($avatar->photobin->value);
+
+        $p->set('temp', 'jpeg', 60);
+
+        $p = new Picture;
+        $p->get('temp');
+
         $r = new Set;
-        $r->setData($avatar->photobin->value)->request();
+        $r->setData($p->toBase())->request();
     }
 
     function display()

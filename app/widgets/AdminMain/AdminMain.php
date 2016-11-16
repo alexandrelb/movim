@@ -1,20 +1,5 @@
 <?php
 
-/**
- * @package Widgets
- *
- * @file AdminMain.php
- * This file is part of Movim.
- *
- * @brief The main configuration on Movim
- *
- * @author Jaussoin Timothée <edhelas@movim.eu>
-
- * Copyright (C)2014 Movim project
- *
- * See COPYING for licensing information.
- */
-
 class AdminMain extends \Movim\Widget\Base
 {
     function load() {
@@ -26,6 +11,7 @@ class AdminMain extends \Movim\Widget\Base
 
         if(isset($form) && !empty($form)) {
             if(isset($form['password'])
+            && isset($form['repassword'])
             && $form['password'] != '' && $form['repassword'] != ''
             && $form['password'] == $form['repassword']) {
                 $form['password'] = sha1($form['password']);
@@ -63,8 +49,7 @@ class AdminMain extends \Movim\Widget\Base
 
     function display()
     {
-        $cd = new \Modl\ConfigDAO();
-        $config = $cd->get();
+        $cd = new \Modl\ConfigDAO;
 
         $l = Movim\i18n\Locale::start();
 
@@ -79,7 +64,7 @@ class AdminMain extends \Movim\Widget\Base
         $this->view->assign('bosh_info4',
             $this->__('bosh.info4', '<a href="http://wiki.movim.eu/en:install">', '</a>'));
 
-        $json = requestURL(MOVIM_API.'websockets', 1);
+        $json = requestURL(MOVIM_API.'websockets', 3);
         $json = json_decode($json);
 
         if(isset($json) && $json->status != 404) {

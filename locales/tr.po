@@ -23,8 +23,6 @@
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Blog/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
-#. extracted from ../app/widgets/Bookmark/locales.ini
-#. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Chat/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Chats/locales.ini
@@ -61,8 +59,6 @@
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Search/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
-#. extracted from ../app/widgets/Share/locales.ini
-#. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Statistics/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Stickers/locales.ini
@@ -80,8 +76,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: movim\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-24 08:36+0200\n"
-"PO-Revision-Date: 2016-03-23 22:27+0000\n"
+"POT-Creation-Date: 2016-11-13 14:58+0200\n"
+"PO-Revision-Date: 2016-11-06 11:15+0000\n"
 "Last-Translator: Jaussoin Timothée <edhelas@movim.eu>\n"
 "Language-Team: Turkish (http://www.transifex.com/movim/movim/language/tr/)\n"
 "Language: tr\n"
@@ -202,6 +198,10 @@ msgstr ""
 
 #: [error]service_unavailable
 msgid "The registration system of this server is currently unavailable"
+msgstr ""
+
+#: [error]forbidden
+msgid "Registration forbidden"
 msgstr ""
 
 #: [oob]about
@@ -403,7 +403,7 @@ msgid "Install the php5-gd library"
 msgstr ""
 
 #: [compatibility]rights
-msgid "Read and write rights for the webserver in Movims root directory"
+msgid "Read and write rights for the webserver in Movim's %s directory"
 msgstr ""
 
 #: [compatibility]db
@@ -506,69 +506,6 @@ msgstr ""
 msgid "This content is private, please login to see it"
 msgstr ""
 
-#: [title]conferences
-msgid "Conferences"
-msgstr ""
-
-#: [title]groups [group]empty_title [menu]groups [page]groups
-msgid "Groups"
-msgstr ""
-
-#: [chatroom]add
-msgid "Add a new Chat Room"
-msgstr ""
-
-#: [chatroom]id [chatrooms]id
-msgid "Chat Room ID"
-msgstr ""
-
-#: [chatroom]name
-msgctxt "[chatroom]name"
-msgid "Name"
-msgstr ""
-
-#: [chatroom]nickname [general]nickname [chatrooms]nickname
-#: [accounts]accounts_nickname
-msgid "Nickname"
-msgstr "Takma ad"
-
-#: [chatroom]autojoin_label
-msgid "Do you want do join automaticaly this Chat Room ?"
-msgstr ""
-
-#: [chatroom]bad_id [chatrooms]bad_id
-msgid "Bad Chatroom ID"
-msgstr ""
-
-#: [chatroom]empty_name [chatrooms]empty_name
-msgid "Empty name"
-msgstr ""
-
-#: [bookmarks]updated
-msgid "Bookmarks updated"
-msgstr ""
-
-#: [bookmarks]error
-msgid "An error occured :"
-msgstr ""
-
-#: [bookmarks]configure
-msgid "Configure"
-msgstr ""
-
-#: [url]add
-msgid "Add a new URL"
-msgstr ""
-
-#: [url]url
-msgid "URL"
-msgstr ""
-
-#: [url]name
-msgctxt "[url]name"
-msgid "Name"
-msgstr ""
-
 #: [message]published
 msgid "Message Published"
 msgstr ""
@@ -645,12 +582,16 @@ msgstr ""
 msgid "Subject changed"
 msgstr ""
 
+#: [chatroom]administration [page]administration
+msgid "Administration"
+msgstr ""
+
 #: [chats]empty_title
 msgid "No chats yet..."
 msgstr ""
 
 #: [chats]empty
-msgid "Open a new conversation by clicking on the %s button bellow or visit the %sContacts%s page."
+msgid "Open a new conversation by clicking on the %s button below or visit the %sContacts%s page."
 msgstr ""
 
 #: [chats]add
@@ -716,6 +657,10 @@ msgstr "Genel Bilgiler"
 #: [general]name [chatrooms]name
 msgid "Name"
 msgstr "Ad"
+
+#: [general]nickname [chatrooms]nickname [accounts]accounts_nickname
+msgid "Nickname"
+msgstr "Takma ad"
 
 #: [general]date_of_birth
 msgid "Date of Birth"
@@ -799,10 +744,6 @@ msgstr "Rumuz"
 
 #: [edit]group
 msgid "Group"
-msgstr ""
-
-#: [edit]updated [roster]updated
-msgid "Contact updated"
 msgstr ""
 
 #: [delete]title
@@ -893,6 +834,10 @@ msgstr ""
 msgid "Are you sure ?"
 msgstr ""
 
+#: [group]empty_title [menu]groups [page]groups
+msgid "Groups"
+msgstr ""
+
 #: [group]empty_text
 msgid "Discover, follow and share"
 msgstr ""
@@ -949,6 +894,14 @@ msgstr ""
 msgid "You will find a list of all your subscribed Groups in My Subscriptions and receive instantly all the new incoming posts in the %sNews%s page."
 msgstr ""
 
+#: [group]share_subscription
+msgid "Share this subscription publicly"
+msgstr ""
+
+#: [group]share_subscription_text
+msgid "It will appear on your profile"
+msgstr ""
+
 #: [groups]empty_title
 msgid "Hello"
 msgstr ""
@@ -965,14 +918,17 @@ msgstr ""
 msgid "You don't have any group subscriptions yet."
 msgstr ""
 
+#: [groups]empty_server
+msgid "There is no Groups yet on this server."
+msgstr ""
+
 #: [groups]subscriptions
 msgid "My Subscriptions"
 msgstr ""
 
 #: [groups]add
-#, fuzzy
 msgid "Create a new Group on %s"
-msgstr "Yeni hesap oluştur"
+msgstr ""
 
 #: [groups]name
 msgid "Group name"
@@ -1126,25 +1082,12 @@ msgstr "Oturum hatası"
 msgid "Account successfully created"
 msgstr "Hesap başarıyla oluşturuldu"
 
-#: [error]xmpp_unauthorized
-msgctxt "[error]xmpp_unauthorized"
-msgid "Your XMPP server is unauthorized"
-msgstr ""
-
 #: [error]mec_error
 msgid "The server takes too much time to respond"
 msgstr ""
 
-#: [error]websocket
-msgid "Movim cannot talk with the server, please try again later (Websocket connection error)"
-msgstr ""
-
 #: [error]impossible
 msgid "Impossible login"
-msgstr ""
-
-#: [error]title
-msgid "Oops!"
 msgstr ""
 
 #: [error]default
@@ -1160,12 +1103,7 @@ msgid "Invalid password format"
 msgstr ""
 
 #: [error]unauthorized
-msgctxt "[error]unauthorized"
 msgid "Your XMPP server is unauthorized"
-msgstr ""
-
-#: [error]conflict
-msgid "A Movim session is already open on an other device"
 msgstr ""
 
 #: [error]wrong_account
@@ -1196,7 +1134,7 @@ msgstr ""
 msgid "No account yet ?"
 msgstr ""
 
-#: [form]whitelist.info
+#: [form]whitelist_info
 msgid "You can login with accounts from theses servers"
 msgstr ""
 
@@ -1218,6 +1156,10 @@ msgstr ""
 
 #: [menu]empty
 msgid "Welcome on your news feed, here you will see all the posts published by your contacts and in the groups you have subscribed."
+msgstr ""
+
+#: [menu]discover [button]discover
+msgid "Discover"
 msgstr ""
 
 #: [menu]refresh
@@ -1260,7 +1202,7 @@ msgstr ""
 msgid "Discover and register to the groups you are interested in"
 msgstr ""
 
-#: [post]content [post]content_label
+#: [post]content [publish]content_label
 msgid "Content"
 msgstr ""
 
@@ -1328,6 +1270,10 @@ msgstr ""
 msgid "Comment published"
 msgstr ""
 
+#: [post]comment_deleted
+msgid "Comment deleted"
+msgstr ""
+
 #: [hello]blog_title
 msgid "Visit your public blog"
 msgstr ""
@@ -1364,6 +1310,14 @@ msgstr ""
 msgid "All the main Movim features are accessible there. Don't hesitate to navigate through the pages to discover more!"
 msgstr ""
 
+#: [hello]profile_title
+msgid "Looks like you didn't complete your profile yet"
+msgstr ""
+
+#: [hello]profile_paragraph
+msgid "You can go in the Configuration page to describe yourself and put a nice picture"
+msgstr ""
+
 #: [status]disconnect
 msgid "Disconnect"
 msgstr ""
@@ -1384,39 +1338,35 @@ msgstr ""
 msgid "Presence"
 msgstr ""
 
-#: [status]online
-msgid "Online with Movim"
-msgstr ""
-
-#: [post]preview
+#: [publish]preview
 msgid "Preview"
 msgstr ""
 
-#: [post]help [page]help
+#: [publish]help [page]help
 msgid "Help"
 msgstr "Yardım"
 
-#: [post]help_more
+#: [publish]help_more
 msgid "More help"
 msgstr ""
 
-#: [post]help_manual
+#: [publish]help_manual
 msgid "Markdown syntax manual"
 msgstr ""
 
-#: [post]content_text
+#: [publish]content_text
 msgid "You can format your content using Markdown"
 msgstr ""
 
-#: [post]link
+#: [publish]link
 msgid "Link"
 msgstr ""
 
-#: [post]tags
+#: [publish]tags
 msgid "Tags"
 msgstr ""
 
-#: [post]gallery
+#: [publish]gallery
 msgid "This picture will be added to your gallery"
 msgstr ""
 
@@ -1480,8 +1430,20 @@ msgstr ""
 msgid "Chatrooms"
 msgstr ""
 
+#: [chatrooms]id
+msgid "Chat Room ID"
+msgstr ""
+
 #: [chatrooms]name_placeholder
 msgid "My Favorite Room"
+msgstr ""
+
+#: [chatrooms]bad_id
+msgid "Bad Chatroom ID"
+msgstr ""
+
+#: [chatrooms]empty_name
+msgid "Empty name"
 msgstr ""
 
 #: [chatrooms]users
@@ -1494,6 +1456,10 @@ msgstr ""
 
 #: [chatrooms]conflict
 msgid "Username already taken"
+msgstr ""
+
+#: [bookmarks]updated
+msgid "Bookmarks updated"
 msgstr ""
 
 #: [room]anonymous_title
@@ -1549,11 +1515,15 @@ msgid "No contacts ?"
 msgstr ""
 
 #: [roster]no_contacts_text
-msgid "You can add one using the + button bellow"
+msgid "You can add one using the + button below"
 msgstr ""
 
 #: [roster]show_hide
 msgid "Show/Hide"
+msgstr ""
+
+#: [roster]add_title
+msgid "Add a contact"
 msgstr ""
 
 #: [roster]add_contact_info1
@@ -1576,6 +1546,10 @@ msgstr ""
 msgid "Contact added"
 msgstr ""
 
+#: [roster]updated
+msgid "Contact updated"
+msgstr ""
+
 #: [roster]deleted
 msgid "Contact deleted"
 msgstr ""
@@ -1594,14 +1568,6 @@ msgstr ""
 
 #: [search]subtitle
 msgid "Open me using Ctrl + M"
-msgstr ""
-
-#: [share]error
-msgid "This is not a valid url"
-msgstr ""
-
-#: [share]success
-msgid "Sharing the URL"
 msgstr ""
 
 #: [statistics]title
@@ -1656,6 +1622,18 @@ msgstr ""
 msgid "Choose a file to upload"
 msgstr ""
 
+#: [upload]info
+msgid "Large pictures will be resized and compressed"
+msgstr ""
+
+#: [upload]error_filesize
+msgid "File too large"
+msgstr ""
+
+#: [upload]error_failed
+msgid "Upload failed"
+msgstr ""
+
 #: [vcard]title [page]profile
 msgid "Profile"
 msgstr "Profil"
@@ -1692,6 +1670,10 @@ msgstr ""
 msgid "Yahoo Account"
 msgstr ""
 
+#: [privacy]my_profile
+msgid "Go to my profile page"
+msgstr ""
+
 #: [privacy]privacy_title
 msgid "Privacy Level"
 msgstr ""
@@ -1701,7 +1683,7 @@ msgid "Is this profile public ?"
 msgstr ""
 
 #: [privacy]privacy_info
-msgid "Please pay attention ! By making your profile public, all the information listed bellow will be available for all the Movim users and on the whole Internet."
+msgid "Please pay attention ! By making your profile public, all the information listed below will be available for all the Movim users and on the whole Internet."
 msgstr ""
 
 #: [save]submit [button]submit
@@ -1720,8 +1702,8 @@ msgstr ""
 msgid "Movim is a kickass distributed social networking platform that protect your privacy an comes with a set of awesome features."
 msgstr ""
 
-#: [page]administration
-msgid "Administration"
+#: [global]loading
+msgid "Loading…"
 msgstr ""
 
 #: [page]home
@@ -1785,6 +1767,7 @@ msgid "Pods"
 msgstr ""
 
 #: [page]share
+msgctxt "[page]share"
 msgid "Share"
 msgstr ""
 
@@ -1814,6 +1797,18 @@ msgstr ""
 
 #: [error]whoops
 msgid "Whoops!"
+msgstr ""
+
+#: [error]websocket
+msgid "Movim cannot talk with the server, please try again later"
+msgstr ""
+
+#: [error]oops
+msgid "Oops!"
+msgstr ""
+
+#: [button]call
+msgid "Call"
 msgstr ""
 
 #: [button]validate
@@ -1909,9 +1904,13 @@ msgid "Previous"
 msgstr ""
 
 #: [button]search
-#, fuzzy
 msgid "Search"
-msgstr "Mart"
+msgstr ""
+
+#: [button]share
+msgctxt "[button]share"
+msgid "Share"
+msgstr ""
 
 #: [day]title
 msgid "Day"
@@ -2561,6 +2560,10 @@ msgstr ""
 
 #: [post]comments
 msgid "Comments"
+msgstr ""
+
+#: [post]original_deleted
+msgid "Original post deleted"
 msgstr ""
 
 #: [api]error

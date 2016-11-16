@@ -59,6 +59,12 @@ class Groups extends \Movim\Widget\Base
 
     function onDiscoError($packet)
     {
+        $id = new \Modl\ItemDAO();
+        $id->deleteItems($packet->content);
+
+        RPC::call('MovimTpl.fill', '#groups_widget', $this->prepareSubscriptions());
+        RPC::call('Groups.refresh');
+
         Notification::append(null, $this->__('groups.disco_error'));
     }
 
@@ -79,7 +85,7 @@ class Groups extends \Movim\Widget\Base
 
     function ajaxHeader()
     {
-        $id = new \modl\ItemDAO();
+        $id = new \Modl\ItemDAO();
 
         $view = $this->tpl();
         $view->assign('servers', $id->getGroupServers());
@@ -92,7 +98,7 @@ class Groups extends \Movim\Widget\Base
     {
         $html = $this->prepareSubscriptions();
 
-        RPC::call('movim_fill', 'groups_widget', $html);
+        RPC::call('MovimTpl.fill', '#groups_widget', $html);
         RPC::call('Groups.refresh');
     }
 
@@ -102,6 +108,8 @@ class Groups extends \Movim\Widget\Base
             Notification::append(null, $this->__('groups.disco_error'));
             return;
         }
+
+        RPC::call('MovimTpl.fill', '#groups_widget', '');
 
         $r = new Items;
         $r->setTo($server)->request();
@@ -139,7 +147,9 @@ class Groups extends \Movim\Widget\Base
         }
 
         $c = new Create;
-        $c->setTo($server)->setNode($uri)->setData($form->name->value)
+        $c->setTo($server)
+          ->setNode($uri)
+          ->setName($form->name->value)
           ->request();
     }
 
@@ -149,7 +159,7 @@ class Groups extends \Movim\Widget\Base
 
         $html = $this->prepareServer($server);
 
-        RPC::call('movim_fill', 'groups_widget', $html);
+        RPC::call('MovimTpl.fill', '#groups_widget', $html);
         RPC::call('Groups.refresh');
     }
 
@@ -164,7 +174,7 @@ class Groups extends \Movim\Widget\Base
     }
 
     function prepareSubscriptions() {
-        $sd = new \modl\SubscriptionDAO();
+        $sd = new \Modl\SubscriptionDAO;
 
         $view = $this->tpl();
         $view->assign('subscriptions', $sd->getSubscribed());
@@ -174,7 +184,7 @@ class Groups extends \Movim\Widget\Base
     }
 
     private function prepareServer($server) {
-        $id = new \modl\ItemDAO();
+        $id = new \Modl\ItemDAO;
 
         $view = $this->tpl();
         $view->assign('nodes', $id->getItems($server));

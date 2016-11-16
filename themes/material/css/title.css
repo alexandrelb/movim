@@ -5,10 +5,14 @@ h1 { /* Display 1 */
     line-height: 7rem;
 }
 
+article h1 {
+    line-height: 5rem;
+}
+
 h2 { /* Headline */
     font-size: 3rem;
     line-height: 4rem;
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 }
 
 h2.thin {
@@ -18,7 +22,8 @@ h2.thin {
 h3 { /* Title */
     font-size: 2.5rem;
     font-weight: 700;
-    line-height: 4.5rem;
+    line-height: 3rem;
+    padding: 1rem 0;
 }
 
 h4, input, textarea, select { /* Headline */
@@ -34,6 +39,16 @@ h4.gray {
     color: rgba(0, 0, 0, 0.54);
 }
 
+small {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.75em;
+    font-weight: normal;
+}
+
+h3 + small {
+    font-size: 1.75rem;
+}
+
 .snackbar, /* Body 2 */
 .toast {
     font-size: 1.75rem;
@@ -44,6 +59,11 @@ label, span.info { /* Caption */
     font-size: 1.5rem;
     color: rgba(0, 0, 0, 0.54);
 }
+
+span.info i+i {
+    margin-left: 0.5rem;
+}
+
 label, span.info b { /* Caption */
     font-weight: 600;
 }

@@ -6,15 +6,16 @@ use Movim\Controller\Ajax;
 
 class Base
 {
-    protected $js = array(); /*< Contains javascripts. */
-    protected $css = array(); /*< Contains CSS files. */
-    protected $rawcss = array(); /*< Contains raw CSS files links. */
-    protected $ajax;     /*< Contains ajax client code. */
+    protected $js = [];     // Contains javascripts
+    protected $css = [];    // Contains CSS files
+    protected $rawcss = []; // Contains raw CSS files links
+    protected $ajax;        // Contains ajax client code
     protected $user;
     protected $name;
-    protected $pure;    // To render the widget without the container
-    //protected $translations = array(); // Set translations in the controller
+    protected $pure;        // To render the widget without the container
+
     protected $_view;
+
     public $events;
     public $filters;
 
@@ -36,8 +37,7 @@ class Base
         $this->name = get_class($this);
 
         // If light loading enabled, we stop here
-        if($light)
-            return;
+        if($light) return;
 
         // Put default widget init here.
         $this->ajax = Ajax::getInstance();
@@ -50,7 +50,7 @@ class Base
             foreach($meths as $method) {
                 if(preg_match('#^ajax#', $method->name)) {
                     $pars = $method->getParameters();
-                    $params = array();
+                    $params = [];
                     foreach($pars as $param) {
                         $params[] = $param->name;
                     }
@@ -60,12 +60,13 @@ class Base
             }
         }
 
-        $config = array(
+        $config = [
             'tpl_dir'       => $this->respath('', true),
             'cache_dir'     => CACHE_PATH,
             'tpl_ext'       => 'tpl',
             'auto_escape'   => false
-        );
+        ];
+
         // We load the template engine
         $this->view = new Tpl;
         $this->view->objectConfigure($config);
@@ -91,7 +92,7 @@ class Base
 
     function ___()
     {
-        echo call_user_func_array(array(&$this, '__'), func_get_args());
+        echo call_user_func_array([&$this, '__'], func_get_args());
     }
 
     function supported($key)
@@ -101,7 +102,7 @@ class Base
 
     function route()
     {
-        return call_user_func_array('Route::urlize',func_get_args());
+        return call_user_func_array('\Movim\Route::urlize',func_get_args());
     }
 
     function load() {}
@@ -137,12 +138,12 @@ class Base
     }
 
     protected function tpl() {
-        $config = array(
+        $config = [
             'tpl_dir'       => APP_PATH.'widgets/'.$this->name.'/',
             'cache_dir'     => CACHE_PATH,
             'tpl_ext'       => 'tpl',
             'auto_escape'   => false
-        );
+        ];
 
         $view = new Tpl;
         $view->objectConfigure($config);
@@ -268,7 +269,7 @@ class Base
 
         if($filter != null) {
             if(!is_array($this->filters)) {
-                $this->filters = array();
+                $this->filters = [];
             }
             $this->filters[$function] = $filter;
         }

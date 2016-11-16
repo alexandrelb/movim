@@ -4,7 +4,8 @@ use Respect\Validation\Validator;
 
 include_once WIDGETS_PATH.'Post/Post.php';
 
-class Blog extends \Movim\Widget\Base {
+class Blog extends \Movim\Widget\Base
+{
     public $_paging = 10;
 
     private $_from;
@@ -29,7 +30,7 @@ class Blog extends \Movim\Widget\Base {
             $this->_item = $pd->getItem($this->_from, $this->_node);
             $this->_mode = 'group';
 
-            $this->url = Route::urlize('node', array($this->_from, $this->_node));
+            $this->url = $this->route('node', [$this->_from, $this->_node]);
         } elseif($this->_view == 'tag' && $this->validateTag($this->get('t'))) {
             $this->_mode = 'tag';
             $this->_tag = $this->get('t');
@@ -46,7 +47,7 @@ class Blog extends \Movim\Widget\Base {
             }
             $this->_mode = 'blog';
 
-            $this->url = Route::urlize('blog', $this->_from);
+            $this->url = $this->route('blog', $this->_from);
         }
 
         $pd = new \modl\PostnDAO();
@@ -60,7 +61,7 @@ class Blog extends \Movim\Widget\Base {
                 }
                 $this->_page = $this->_id + 1;
             } elseif(Validator::stringType()->length(5, 100)->validate($this->_id)) {
-                $this->_messages = $pd->getPublicItem($this->_from, $this->_node, $this->_id);
+                $this->_messages[0] = $pd->getPublicItem($this->_from, $this->_node, $this->_id);
 
                 if(is_object($this->_messages[0])) {
                     $this->title = $this->_messages[0]->title;
@@ -70,16 +71,16 @@ class Blog extends \Movim\Widget\Base {
                         $this->description = truncate($description, 100);
                     }
 
-                    $attachements = $this->_messages[0]->getAttachements();
-                    if($attachements && array_key_exists('pictures', $attachements)) {
-                        $this->image = urldecode($attachements['pictures'][0]['href']);
+                    $attachments = $this->_messages[0]->getAttachments();
+                    if($attachments && array_key_exists('pictures', $attachments)) {
+                        $this->image = urldecode($attachments['pictures'][0]['href']);
                     }
                 }
 
                 if($this->_view == 'node') {
-                    $this->url = Route::urlize('node', array($this->_from, $this->_node, $this->_id));
+                    $this->url = $this->route('node', [$this->_from, $this->_node, $this->_id]);
                 } else {
-                    $this->url = Route::urlize('blog', array($this->_from, $this->_id));
+                    $this->url = $this->route('blog', [$this->_from, $this->_id]);
                 }
             }
         } else {
@@ -95,13 +96,15 @@ class Blog extends \Movim\Widget\Base {
             array_pop($this->_messages);
         }
 
-        $this->user = new User($this->_from);
+        if($this->_node == 'urn:xmpp:microblog:0') {
+            $this->user = new User($this->_from);
 
-        $cssurl = $this->user->getDumpedConfig('cssurl');
-        if(isset($cssurl)
-        && $cssurl != ''
-        && Validator::url()->validate($cssurl)) {
-            $this->addrawcss($cssurl);
+            $cssurl = $this->user->getDumpedConfig('cssurl');
+            if(isset($cssurl)
+            && $cssurl != ''
+            && Validator::url()->validate($cssurl)) {
+                $this->addrawcss($cssurl);
+            }
         }
     }
 
@@ -137,7 +140,7 @@ class Blog extends \Movim\Widget\Base {
 
     private function validateTag($tag)
     {
-        return Validator::stringType()->notEmpty()->alnum()->validate($tag);
+        return Validator::stringType()->notEmpty()->alnum('_-')->validate($tag);
     }
 
     function getComments($post)

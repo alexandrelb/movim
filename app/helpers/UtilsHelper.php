@@ -1,24 +1,9 @@
 <?php
 
-/**
- * @file Utils.php
- * This file is part of PROJECT.
- *
- * @brief Description
- *
- * @author Etenil <etenil@etenilsrealm.nl>
- *
- * @version 1.0
- * @date 20 February 2011
- *
- * Copyright (C)2011 Etenil
- *
- * All rights reserved.
- */
-
 use Monolog\Logger;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Handler\StreamHandler;
+use GuzzleHttp\Client;
 
 class Utils {
     public static function log($message, $priority = '')
@@ -509,7 +494,8 @@ function getMood() {
 /*
  * Generate a standard UUID
  */
-function generateUUID($string = false) {
+function generateUUID($string = false)
+{
     if($string != false)
         $data = $string;
     else
@@ -521,7 +507,8 @@ function generateUUID($string = false) {
     return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
 
-function movim_log($logs) {
+function movim_log($logs)
+{
     $log = new Logger('movim');
     $log->pushHandler(new SyslogHandler('movim'));
 
@@ -536,7 +523,8 @@ function movim_log($logs) {
  * @desc Generate a simple random key
  * @params The size of the key
  */
-function generateKey($size) {
+function generateKey($size)
+{
     // Generating the session cookie's hash.
     $hash_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $hash = "";
@@ -551,7 +539,8 @@ function generateKey($size) {
 /*
  * @desc Get the range aroung a position with a radius
  */
-function geoRadius($latitude, $longitude, $radius) {
+function geoRadius($latitude, $longitude, $radius)
+{
     $lat_range = $range/69.172;
     $lon_range = abs($range/(cos($latitude) * 69.172));
     $min_lat = number_format($latitude - $lat_range, "4", ".", "");
@@ -559,13 +548,14 @@ function geoRadius($latitude, $longitude, $radius) {
     $min_lon = number_format($longitude - $lon_range, "4", ".", "");
     $max_lon = number_format($longitude + $lon_range, "4", ".", "");
 
-    return array($min_lat, $max_lat, $min_lon, $max_lon);
+    return [$min_lat, $max_lat, $min_lon, $max_lon];
 }
 
 /*
  * @desc Request a simple url
  */
-function requestURL($url, $timeout = 10, $post = false) {
+function requestURL($url, $timeout = 10, $post = false)
+{
     $ch = curl_init($url);
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -585,7 +575,7 @@ function requestURL($url, $timeout = 10, $post = false) {
         curl_setopt ($ch, CURLOPT_POSTFIELDS, $params);
     }
 
-    $rs = array();
+    $rs = [];
 
     $content = curl_exec($ch);
 
@@ -612,7 +602,8 @@ function getSmileyPath($id)
 /*
  * @desc Translate something
  */
-function __() {
+function __()
+{
     $args = func_get_args();
     $l = Movim\i18n\Locale::start();
 
@@ -620,7 +611,8 @@ function __() {
     return $l->translate($string, $args);
 }
 
-function createEmailPic($jid, $email) {
+function createEmailPic($jid, $email)
+{
     $cachefile = DOCUMENT_ROOT.'/cache/'.$jid.'_email.png';
 
     if(file_exists(DOCUMENT_ROOT.'/cache/'.$jid.'_email.png'))

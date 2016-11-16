@@ -1,6 +1,10 @@
 <?php
 
-namespace modl;
+namespace Modl;
+
+use Respect\Validation\Validator;
+
+use Movim\Picture;
 
 class Message extends Model {
     public $id;
@@ -26,7 +30,11 @@ class Message extends Model {
     public $publishedPrepared; // Only for chat purpose
     public $edited;
 
+    public $picture; // A valid (small) picture URL
     public $sticker; // The sticker code
+    public $quoted;  // If the user was quoted in the message
+
+    public $rtl = false;
 
     public function __construct()
     {
@@ -58,8 +66,12 @@ class Message extends Model {
                 {"type":"date"},
             "edited" :
                 {"type":"int", "size":1},
+            "picture" :
+                {"type":"text" },
             "sticker" :
-                {"type":"string", "size":128 }
+                {"type":"string", "size":128 },
+            "quoted" :
+                {"type":"int", "size":1}
         }';
 
         parent::__construct();
@@ -87,7 +99,7 @@ class Message extends Model {
 
             $this->type = 'chat';
             if($stanza->attributes()->type) {
-                $this->type    = (string)$stanza->attributes()->type;
+                $this->type = (string)$stanza->attributes()->type;
             }
 
             if($stanza->body)
@@ -96,12 +108,34 @@ class Message extends Model {
             if($stanza->subject)
                 $this->__set('subject', (string)$stanza->subject);
 
+            if($this->type == 'groupchat') {
+                $pd = new \Modl\PresenceDAO;
+                $p = $pd->getMyPresenceRoom($this->jidfrom);
+
+                if(is_object($p)
+                && strpos($this->body, $p->resource) !== false) {
+                    $this->quoted = true;
+                }
+            }
+
             if($stanza->html) {
                 $xml = \simplexml_load_string((string)$stanza->html->body);
                 if($xml) {
                     $results = $xml->xpath('//img/@src');
                     if(is_array($results) && !empty($results)) {
-                        $this->sticker = getCid((string)$results[0]);
+                        if(substr((string)$results[0], 0, 10) == 'data:image') {
+                            $str = explode('base64,', $results[0]);
+                            if(isset($str[1])) {
+                                $p = new Picture;
+                                $p->fromBase(urldecode($str[1]));
+                                $key = sha1(urldecode($str[1]));
+                                $p->set($key, 'png');
+
+                                $this->sticker = $key;
+                            }
+                        } else {
+                            $this->sticker = getCid((string)$results[0]);
+                        }
                     }
                 }
             }
@@ -118,7 +152,26 @@ class Message extends Model {
                 $this->published = gmdate('Y-m-d H:i:s', strtotime($parent->delay->attributes()->stamp));
             else
                 $this->published = gmdate('Y-m-d H:i:s');
+
+            return $this->checkPicture();
         }
+    }
+
+    public function checkPicture()
+    {
+        $body = trim($this->body);
+
+        if(Validator::url()->notEmpty()->validate($body)) {
+            $check = new \Movim\Task\CheckSmallPicture;
+            return $check->run($body)
+                ->then(function($small) use($body) {
+                    if($small) $this->picture = $body;
+                });
+        }
+
+        return new \React\Promise\Promise(function($resolve) {
+            $resolve(true);
+        });
     }
 
     public function convertEmojis()

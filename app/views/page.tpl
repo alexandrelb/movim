@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="roster">
+<html>
   <head>
     <meta charset="utf-8" />
     <title><?php $this->title();?></title>
@@ -19,6 +19,7 @@
 
     <?php
         $this->addCss('style.css');
+        $this->addCss('notification.css');
         $this->addCss('header.css');
         $this->addCss('listn.css');
         $this->addCss('grid.css');
@@ -26,6 +27,7 @@
         $this->addCss('form.css');
         $this->addCss('icon.css');
         $this->addCss('dialog.css');
+        $this->addCss('drawer.css');
         $this->addCss('card.css');
         $this->addCss('table.css');
         $this->addCss('color.css');
@@ -41,7 +43,7 @@
         $this->scripts();
     ?>
     </head>
-    <body>
+    <body dir="<?php $this->dir();?>">
         <noscript>
             <style type="text/css">
                 nav {display:none;} #content {display: none;}
@@ -52,8 +54,19 @@
         </noscript>
         <div id="hiddendiv"></div>
         <div id="snackbar" class="snackbar"></div>
+        <div id="error_websocket" class="snackbar hide">
+            <ul class="list">
+                <li>
+                    <span class="control icon gray">
+                        <i class="zmdi zmdi-code-setting"></i>
+                    </span>
+                    <p class="normal">
+                        <?php echo __('error.websocket'); ?>
+                    </p>
+                </li>
+        </div>
         <?php $this->widget('Dialog');?>
-        <?php $this->widget('Notification');?>
+        <?php $this->widget('Drawer');?>
         <?php $this->content();?>
         <script type="text/javascript">if(typeof movim_onload == 'function') { movim_onload(); }</script>
     </body>

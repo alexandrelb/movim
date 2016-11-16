@@ -9,11 +9,13 @@
                         {if="$key == $conf.language"}
                             <option
                                 value="{$key}"
+                                dir="auto"
                                 selected="selected">
                                 {$value}
                             </option>
                         {else}
                             <option
+                                dir="auto"
                                 value="{$key}">
                                 {$value}
                             </option>
@@ -24,7 +26,7 @@
         <label for="language">{$c->__('config.language')}</label>
     </div>
 
-    <div class="block">
+    <!--<div class="block">
         <div class="select">
             <select name="roster" id="roster" value="{$conf.roster}">
                 <option value="hide" {if="$conf.roster == 'hide'"}selected="selected"{/if}>
@@ -36,7 +38,7 @@
             </select>
         </div>
         <label for="roster">{$c->__('config.roster')}</label>
-    </div>
+    </div>-->
 
     <br />
     <h3>{$c->__('config.advanced')}</h3>

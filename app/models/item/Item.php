@@ -1,8 +1,11 @@
 <?php
 
-namespace modl;
+namespace Modl;
 
-class Item extends Model {
+use Movim\Picture;
+
+class Item extends Model
+{
     public $server;
     public $jid;
     public $name;
@@ -16,7 +19,8 @@ class Item extends Model {
     public $sub;
     public $logo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_struct = '
         {
             "server" :
@@ -42,7 +46,8 @@ class Item extends Model {
         parent::__construct();
     }
 
-    public function set($item, $from) {
+    public function set($item, $from)
+    {
         $this->server = $from;
         $this->node   = (string)$item->attributes()->node;
         $this->jid    = (string)$item->attributes()->jid;
@@ -52,7 +57,8 @@ class Item extends Model {
         $this->updated  = date('Y-m-d H:i:s');
     }
 
-    public function setMetadata($metadata, $from, $node) {
+    public function setMetadata($metadata, $from, $node)
+    {
         $this->server = $from;
         $this->jid = $from;
         $this->node = $node;
@@ -85,23 +91,51 @@ class Item extends Model {
         $item = $pd->getGroupPicture($this->server, $this->node);
 
         if($item) {
-            $item->getAttachements();
+            $item->getAttachments();
 
-            $p = new \Picture;
-            $p->fromURL($item->getPicture());
-            if($p->set($this->server.$this->node)) {
-                $this->logo = true;
+            $p = new Picture;
+            if($item->getPublicUrl()) {
+                try {
+                    $embed = \Embed\Embed::create($item->getPublicUrl());
+
+                    // We get the icon
+                    $url = false;
+                    foreach($embed->providerIcons as $icon) {
+                        if($icon['mime'] != 'image/x-icon') {
+                            $url = $icon['value'];
+                        }
+                    }
+
+                    // If not we take the main picture
+                    if(!$url) {
+                        $url = (string)$embed->image;
+                    }
+
+                    // If not we take the post picture
+                    if(!$url) {
+                        $url = (string)$item->picture;
+                    }
+
+                    $p->fromURL($url);
+                    if($p->set($this->server.$this->node)) {
+                        $this->logo = true;
+                    }
+                } catch(\Exception $e) {
+                    error_log($e->getMessage());
+                }
+
             }
         }
     }
 
     public function getLogo()
     {
-        $p = new \Picture;
+        $p = new Picture;
         return $p->get($this->server.$this->node, 120);
     }
 
-    public function getName() {
+    public function getName()
+    {
         if($this->name != null)
             return $this->name;
         elseif($this->node != null)
@@ -111,8 +145,10 @@ class Item extends Model {
     }
 }
 
-class Server extends Model {
+class Server extends Item
+{
     public $server;
     public $number;
     public $name;
+    public $published;
 }

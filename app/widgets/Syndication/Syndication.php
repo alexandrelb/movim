@@ -20,6 +20,7 @@ class Syndication extends \Movim\Widget\Base
         }
 
         $from = $this->get('s');
+        $item = $contact = null;
 
         if(filter_var($from, FILTER_VALIDATE_EMAIL)) {
             $node = 'urn:xmpp:microblog:0';
@@ -49,11 +50,11 @@ class Syndication extends \Movim\Widget\Base
 
             $feed->appendChild($author = $dom->createElement('author'));
             $author->appendChild($dom->createElement('name', $contact->getTrueName()));
-            $author->appendChild($dom->createElement('uri', Route::urlize('blog',array($from))));
+            $author->appendChild($dom->createElement('uri', $this->route('blog', [$from])));
 
-            $feed->appendChild($dom->createElement('logo', $contact->getPhoto('xl')));
+            $feed->appendChild($dom->createElement('logo', $contact->getPhoto('l')));
 
-            $self->setAttribute('href', Route::urlize('feed',array($server)));
+            $self->setAttribute('href', $this->route('feed', [$from]));
         }
 
         if($item != null) {
@@ -69,7 +70,7 @@ class Syndication extends \Movim\Widget\Base
                 $feed->appendChild($dom->createElement('subtitle', $item->server));
             }
 
-            $self->setAttribute('href', Route::urlize('feed',array($server, $node)));
+            $self->setAttribute('href', $this->route('feed', [$from, $node]));
         }
 
         $feed->appendChild($generator = $dom->createElement('generator', 'Movim'));
@@ -96,10 +97,10 @@ class Syndication extends \Movim\Widget\Base
             $f->appendXML($message->contentcleaned);
             $div->appendChild($f);
 
-            $attachements = $message->getAttachements();
+            $attachments = $message->getAttachments();
 
-            if(isset($attachements['pictures'])) {
-                foreach($attachements['pictures'] as $value) {
+            if(isset($attachments['pictures'])) {
+                foreach($attachments['pictures'] as $value) {
                     $entry->appendChild($link = $dom->createElement('link'));
                     $link->setAttribute('rel', 'enclosure');
                     $link->setAttribute('type', $value['type']);
@@ -107,8 +108,8 @@ class Syndication extends \Movim\Widget\Base
                 }
             }
 
-            if(isset($attachements['files'])) {
-                foreach($attachements['files'] as $value) {
+            if(isset($attachments['files'])) {
+                foreach($attachments['files'] as $value) {
                     $entry->appendChild($link = $dom->createElement('link'));
                     $link->setAttribute('rel', 'enclosure');
                     $link->setAttribute('type', $value['type']);
@@ -116,13 +117,18 @@ class Syndication extends \Movim\Widget\Base
                 }
             }
 
-            if(isset($attachements['links'])) {
-                foreach($attachements['links'] as $value) {
+            if(isset($attachments['links'])) {
+                foreach($attachments['links'] as $value) {
                     $entry->appendChild($link = $dom->createElement('link'));
                     $link->setAttribute('rel', 'alternate');
                     $link->setAttribute('href', $value['href']);
                 }
             }
+
+            $entry->appendChild($link = $dom->createElement('link'));
+            $link->setAttribute('rel', 'alternate');
+            $link->setAttribute('type', 'text/html');
+            $link->setAttribute('href', $message->getPublicUrl());
         }
 
         echo $dom->saveXML();

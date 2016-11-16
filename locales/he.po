@@ -1,5 +1,6 @@
 #
 # Translators:
+# GenghisKhan <genghiskhan@gmx.ca>, 2016
 # GenghisKhan <genghiskhan@gmx.ca>, 2012
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/About/locales.ini
@@ -21,8 +22,6 @@
 #. extracted from ../app/widgets/Avatar/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Blog/locales.ini
-#. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
-#. extracted from ../app/widgets/Bookmark/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Chat/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
@@ -60,8 +59,6 @@
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Search/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
-#. extracted from ../app/widgets/Share/locales.ini
-#. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Statistics/locales.ini
 #. #-#-#-#-#  locales.po (PACKAGE VERSION)  #-#-#-#-#
 #. extracted from ../app/widgets/Stickers/locales.ini
@@ -79,8 +76,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: movim\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-24 08:36+0200\n"
-"PO-Revision-Date: 2016-03-23 22:27+0000\n"
+"POT-Creation-Date: 2016-11-13 14:58+0200\n"
+"PO-Revision-Date: 2016-11-06 11:15+0000\n"
 "Last-Translator: Jaussoin Timothée <edhelas@movim.eu>\n"
 "Language-Team: Hebrew (http://www.transifex.com/movim/movim/language/he/)\n"
 "Language: he\n"
@@ -104,7 +101,7 @@ msgstr "מתרגמים"
 
 #: [about]translators_text
 msgid "Thanks to all the translators"
-msgstr ""
+msgstr "תודה לכל המתרגמים"
 
 #: [about]software
 msgid "Software"
@@ -124,11 +121,11 @@ msgstr "Movim הינו פלטפורמת תקשורת מבוססת XMPP. כל ה�
 
 #: [account]title [page]account
 msgid "Account"
-msgstr ""
+msgstr "חשבון"
 
 #: [account]password_change_title
 msgid "Change my password"
-msgstr ""
+msgstr "החלף את הסימה שלי"
 
 #: [account]password [db]password [credentials]password [form]password
 #: [input]password
@@ -137,35 +134,35 @@ msgstr "סיסמה"
 
 #: [account]password_confirmation
 msgid "Password confirmation"
-msgstr ""
+msgstr "אימות סיסמה"
 
 #: [account]password_changed
 msgid "The password has been updated"
-msgstr ""
+msgstr "הסיסמה התעדכנה"
 
 #: [account]password_not_valid
 msgid "Please provide a valid password (6 characters minimum)"
-msgstr ""
+msgstr "אנא ספק סיסמה קבילה (6 תווים לפחות)"
 
 #: [account]password_not_same
 msgid "The provided passwords are not the same"
-msgstr ""
+msgstr "הסיסמאות שסופקו אינן זהות"
 
 #: [account]delete_title
 msgid "Delete my account"
-msgstr ""
+msgstr "מחק את החשבון שלי"
 
 #: [account]delete
 msgid "Delete your account"
-msgstr ""
+msgstr "מחק את החשבון שלך"
 
 #: [account]delete_text
 msgid "You will delete your XMPP account and all the relative information linked to it (profile, contacts and publications)."
-msgstr ""
+msgstr "אתה תמחק את חשבון XMPP שלך ואת כל המידע היחסי אשר קשור אליו (דיוקן, אנשי קשר ופרסומים)."
 
 #: [account]delete_text_confirm
 msgid "Are you sure that you want to delete it ?"
-msgstr ""
+msgstr "האם אתה בטוח כי ברצונך למחוק אותו ?"
 
 #: [account]gateway_title
 msgid "Gateway"
@@ -177,7 +174,7 @@ msgstr "יצירת חשבון חדש"
 
 #: [create]notfound
 msgid "No account creation form found on the server"
-msgstr ""
+msgstr "לא נמצא טופס יצירת חשבון על שרת זה"
 
 #: [create]server_on
 msgid "on"
@@ -185,11 +182,11 @@ msgstr ""
 
 #: [create]successfull
 msgid "Your acccount has been successfully registered"
-msgstr ""
+msgstr "החשבון שלך נרשם בהצלחה"
 
 #: [create]loading
 msgid "Loading"
-msgstr ""
+msgstr "כעת טוען"
 
 #: [create]placeholder
 msgid "…and start playing"
@@ -197,15 +194,19 @@ msgstr ""
 
 #: [error]not_acceptable
 msgid "Not Acceptable"
-msgstr ""
+msgstr "לא קביל"
 
 #: [error]service_unavailable
 msgid "The registration system of this server is currently unavailable"
+msgstr "מערכת הרשמה של שרת זה אינה זמינה ברגעים אלו"
+
+#: [error]forbidden
+msgid "Registration forbidden"
 msgstr ""
 
 #: [oob]about
 msgid "This server use an external system for the registration, please click on the following URL."
-msgstr ""
+msgstr "שרת זה משתמש במערכת חיצונית לצורך הרשמה, אנא לחצו על URL להלן."
 
 #: [adhoc]title
 msgid "Actions"
@@ -249,7 +250,7 @@ msgstr "פורט"
 
 #: [db]name
 msgid "Database Name"
-msgstr ""
+msgstr "שם מסד נתונים"
 
 #: [admin]general
 msgid "General Settings"
@@ -308,9 +309,8 @@ msgid "Retype password"
 msgstr "הקלד סיסמה מחדש"
 
 #: [whitelist]title
-#, fuzzy
 msgid "Whitelisted XMPP Servers"
-msgstr "רשימה לבנה - שרת XMPP"
+msgstr ""
 
 #: [whitelist]info1
 msgid "If you want to specify a list of authorized XMPP servers on your Movim pod and forbid the connection on all the others please put their domain name here, with comma (ex: movim.eu,jabber.fr)"
@@ -327,7 +327,7 @@ msgstr "רשימה של שרתי XMPP שמצויים תחת רשימה לבנה"
 #: [information]title
 msgctxt "[information]title"
 msgid "Information Message"
-msgstr ""
+msgstr "הודעת מידע"
 
 #: [information]description
 msgid "Description"
@@ -339,17 +339,16 @@ msgstr "הודעה זו תוצג בעמוד הכניסה"
 
 #: [information]info2
 msgid "Leave this field blank if you dont want to show any message."
-msgstr ""
+msgstr "הותר את שדה זה ריק אם אין ברצונך להציג הודעה."
 
 #: [information]label
 msgctxt "[information]label"
 msgid "Information Message"
-msgstr ""
+msgstr "הודעת מידע"
 
 #: [xmpp]title
-#, fuzzy
 msgid "Default XMPP server"
-msgstr "רשימה לבנה - שרת XMPP"
+msgstr ""
 
 #: [xmpp]domain
 msgid "Main XMPP server domain"
@@ -404,7 +403,7 @@ msgid "Install the php5-gd library"
 msgstr ""
 
 #: [compatibility]rights
-msgid "Read and write rights for the webserver in Movims root directory"
+msgid "Read and write rights for the webserver in Movim's %s directory"
 msgstr ""
 
 #: [compatibility]db
@@ -421,7 +420,7 @@ msgstr ""
 
 #: [schema]browser
 msgid "Browser"
-msgstr ""
+msgstr "דפדפן"
 
 #: [schema]movim
 msgid "Movim Core"
@@ -433,12 +432,11 @@ msgstr ""
 
 #: [schema]xmpp
 msgid "XMPP"
-msgstr ""
+msgstr "XMPP"
 
 #: [api]info
-#, fuzzy
 msgid "Here you can register your pod on the official %sMovim API%s"
-msgstr "באפשרותך לרשום כאן את השרת שלך בתוך %sMovim API%s הרשמי בו יהיה מנוי בתוך %sעמוד השרתים%s."
+msgstr ""
 
 #: [api]register
 msgid "Your pod is not registered on the API"
@@ -466,11 +464,11 @@ msgstr "תצורה עודכנה"
 
 #: [avatar]file
 msgid "File"
-msgstr ""
+msgstr "קובץ"
 
 #: [avatar]use_it
 msgid "Use it"
-msgstr ""
+msgstr "השתמש בזה"
 
 #: [avatar]webcam
 msgid "Webcam"
@@ -494,7 +492,7 @@ msgstr "אווטאר לא מעודכן"
 
 #: [avatar]missing
 msgid "No avatar defined yet"
-msgstr ""
+msgstr "לא הוגדר אווטאר עדיין"
 
 #: [blog]title [feed]title
 msgid "%s's feed"
@@ -506,69 +504,6 @@ msgstr ""
 
 #: [blog]private
 msgid "This content is private, please login to see it"
-msgstr ""
-
-#: [title]conferences
-msgid "Conferences"
-msgstr "ועידות"
-
-#: [title]groups [group]empty_title [menu]groups [page]groups
-msgid "Groups"
-msgstr "קבוצות"
-
-#: [chatroom]add
-msgid "Add a new Chat Room"
-msgstr "הוסף חדר שיחה חדש"
-
-#: [chatroom]id [chatrooms]id
-msgid "Chat Room ID"
-msgstr "מזהה חדר שיחה"
-
-#: [chatroom]name
-msgctxt "[chatroom]name"
-msgid "Name"
-msgstr ""
-
-#: [chatroom]nickname [general]nickname [chatrooms]nickname
-#: [accounts]accounts_nickname
-msgid "Nickname"
-msgstr "שם כינוי"
-
-#: [chatroom]autojoin_label
-msgid "Do you want do join automaticaly this Chat Room ?"
-msgstr "האם ברצונך להצטרף אוטומטית אל שיחת חדר זו ?"
-
-#: [chatroom]bad_id [chatrooms]bad_id
-msgid "Bad Chatroom ID"
-msgstr "מזהה חדר שיחה רע"
-
-#: [chatroom]empty_name [chatrooms]empty_name
-msgid "Empty name"
-msgstr "שם ריק"
-
-#: [bookmarks]updated
-msgid "Bookmarks updated"
-msgstr "סימניות עודכנו"
-
-#: [bookmarks]error
-msgid "An error occured :"
-msgstr ""
-
-#: [bookmarks]configure
-msgid "Configure"
-msgstr "הגדר"
-
-#: [url]add
-msgid "Add a new URL"
-msgstr "הוסף URL חדש"
-
-#: [url]url
-msgid "URL"
-msgstr "URL"
-
-#: [url]name
-msgctxt "[url]name"
-msgid "Name"
 msgstr ""
 
 #: [message]published
@@ -593,7 +528,7 @@ msgstr ""
 
 #: [message]history
 msgid "%s messages retrieved"
-msgstr ""
+msgstr "%s הודעות נתקבלו"
 
 #: [chat]attention
 msgid "%s needs your attention"
@@ -617,11 +552,11 @@ msgstr "שוחח עם האנשי קשר שלך"
 
 #: [chat]frequent [chats]frequent
 msgid "Frequent contacts"
-msgstr ""
+msgstr "אנשי קשר תדירים"
 
 #: [chatroom]members
 msgid "Members"
-msgstr ""
+msgstr "חברים"
 
 #: [chatroom]connected [chatrooms]connected
 msgid "Connected to the chatroom"
@@ -637,22 +572,26 @@ msgstr "תצורה"
 
 #: [chatroom]config_saved
 msgid "Configuration saved"
-msgstr ""
+msgstr "תצורה נשמרה"
 
 #: [chatroom]subject
 msgid "Subject"
-msgstr ""
+msgstr "נושא"
 
 #: [chatroom]subject_changed
 msgid "Subject changed"
-msgstr ""
+msgstr "נושא נשתנה"
+
+#: [chatroom]administration [page]administration
+msgid "Administration"
+msgstr "ניהול"
 
 #: [chats]empty_title
 msgid "No chats yet..."
-msgstr ""
+msgstr "אין שיחות עדיין..."
 
 #: [chats]empty
-msgid "Open a new conversation by clicking on the %s button bellow or visit the %sContacts%s page."
+msgid "Open a new conversation by clicking on the %s button below or visit the %sContacts%s page."
 msgstr ""
 
 #: [chats]add
@@ -661,11 +600,11 @@ msgstr "שיח עם איש קשר"
 
 #: [chats]more
 msgid "Load more contacts"
-msgstr ""
+msgstr "טען עוד אנשי קשר"
 
 #: [button]new
 msgid "New conversation"
-msgstr ""
+msgstr "דיון חדש"
 
 #: [config]general
 msgid "General"
@@ -677,15 +616,15 @@ msgstr "שפה"
 
 #: [config]roster
 msgid "Roster display"
-msgstr ""
+msgstr "תצוגת רשימה"
 
 #: [config]roster_show
 msgid "Show the offline contacts"
-msgstr ""
+msgstr "הצג אנשי קשר לא מקוונים"
 
 #: [config]roster_hide
 msgid "Hide the offline contacts"
-msgstr ""
+msgstr "הסתר אנשי קשר לא מקוונים"
 
 #: [config]appearence
 msgid "Appearence"
@@ -697,7 +636,7 @@ msgstr ""
 
 #: [config]advanced
 msgid "Advanced Configuration"
-msgstr ""
+msgstr "תצורה מתקדמת"
 
 #: [notifications]message
 msgid "Notify on incoming message"
@@ -718,6 +657,10 @@ msgstr "מידע כללי"
 #: [general]name [chatrooms]name
 msgid "Name"
 msgstr "שם"
+
+#: [general]nickname [chatrooms]nickname [accounts]accounts_nickname
+msgid "Nickname"
+msgstr "שם כינוי"
 
 #: [general]date_of_birth
 msgid "Date of Birth"
@@ -789,7 +732,7 @@ msgstr "נרשמו לאחרונה"
 
 #: [explore]explore
 msgid "Find some new friends"
-msgstr ""
+msgstr "מצא חברים חדשים"
 
 #: [edit]title [button]edit
 msgid "Edit"
@@ -803,10 +746,6 @@ msgstr "כינוי"
 msgid "Group"
 msgstr "קבוצה"
 
-#: [edit]updated [roster]updated
-msgid "Contact updated"
-msgstr "איש קשר עודכן"
-
 #: [delete]title
 msgid "Are you sure?"
 msgstr "האם אתה בטוח?"
@@ -817,23 +756,23 @@ msgstr ""
 
 #: [age]years
 msgid "%s years"
-msgstr ""
+msgstr "%s שנים"
 
 #: [blog]last
 msgid "Last public post"
-msgstr ""
+msgstr "פרסום פומבי אחרון"
 
 #: [blog]visit
 msgid "Visit the blog to see all the public posts"
-msgstr ""
+msgstr "בקר בבלוג כדי לצפות בכל הפרסומים הפומביים"
 
 #: [subscription]to
 msgid "You can see this contact status"
-msgstr ""
+msgstr "באפשרותך לראות את מצב איש קשר זה"
 
 #: [subscription]to_button
 msgid "Share my status"
-msgstr ""
+msgstr "שתף את המצב שלי"
 
 #: [subscription]to_text
 msgid "But this contact cannot see yours"
@@ -853,11 +792,11 @@ msgstr ""
 
 #: [subscription]nil
 msgid "No subscriptions"
-msgstr ""
+msgstr "אין הרשמות"
 
 #: [subscription]nil_button
 msgid "Invite"
-msgstr ""
+msgstr "הזמן"
 
 #: [subscription]nil_text
 msgid "This contact is in your contact list but there is no subscriptions between the two accounts"
@@ -881,7 +820,7 @@ msgstr ""
 
 #: [group]unsubscribed
 msgid "Unsubscribed"
-msgstr ""
+msgstr "לא רשום"
 
 #: [group]share_label
 msgid "Make your membership to this group public to your friends"
@@ -895,13 +834,17 @@ msgstr ""
 msgid "Are you sure ?"
 msgstr "האם אתה בטוח ?"
 
+#: [group]empty_title [menu]groups [page]groups
+msgid "Groups"
+msgstr "קבוצות"
+
 #: [group]empty_text
 msgid "Discover, follow and share"
-msgstr ""
+msgstr "גלה, עקוב ושתף"
 
 #: [group]empty
 msgid "Something bad happened to this group"
-msgstr ""
+msgstr "משהו רע קרה לקבוצה זו"
 
 #: [group]config_saved
 msgid "Group configuration saved"
@@ -909,7 +852,7 @@ msgstr "תצורת קבוצה נשמרה"
 
 #: [group]delete_title
 msgid "Delete the group"
-msgstr ""
+msgstr "מחק את הקבוצה"
 
 #: [group]delete_text
 msgid "You are going to delete the following group. Please confirm your action."
@@ -921,7 +864,7 @@ msgstr ""
 
 #: [group]counter
 msgid "%s groups on this server"
-msgstr ""
+msgstr "%s קבוצות על שרת זה"
 
 #: [group]subscriptions [statistics]subscriptions
 msgid "Subscriptions"
@@ -929,11 +872,11 @@ msgstr "הרשמות"
 
 #: [group]servers
 msgid "Groups servers"
-msgstr ""
+msgstr "שרתי קבוצות"
 
 #: [group]search_server
 msgid "Search for a new server"
-msgstr ""
+msgstr "חפש שרת חדש"
 
 #: [group]help_info1
 msgid "Groups are the perfect way to share posts about topics that you like with all the other Movim's users."
@@ -949,6 +892,15 @@ msgstr ""
 
 #: [group]help_info4
 msgid "You will find a list of all your subscribed Groups in My Subscriptions and receive instantly all the new incoming posts in the %sNews%s page."
+msgstr ""
+
+#: [group]share_subscription
+#, fuzzy
+msgid "Share this subscription publicly"
+msgstr "לפרסם את פרסום זה בפומבי?"
+
+#: [group]share_subscription_text
+msgid "It will appear on your profile"
 msgstr ""
 
 #: [groups]empty_title
@@ -967,18 +919,21 @@ msgstr ""
 msgid "You don't have any group subscriptions yet."
 msgstr ""
 
-#: [groups]subscriptions
-msgid "My Subscriptions"
+#: [groups]empty_server
+msgid "There is no Groups yet on this server."
 msgstr ""
 
+#: [groups]subscriptions
+msgid "My Subscriptions"
+msgstr "ההרשמות שלי"
+
 #: [groups]add
-#, fuzzy
 msgid "Create a new Group on %s"
-msgstr "יצירת חשבון חדש"
+msgstr ""
 
 #: [groups]name
 msgid "Group name"
-msgstr ""
+msgstr "שם קבוצה"
 
 #: [groups]name_example
 msgid "My Little Pony - Fan Club"
@@ -986,31 +941,31 @@ msgstr "אין כמו אבא שבעולם - מועדון מעריצים"
 
 #: [groups]created
 msgid "Group created successfully"
-msgstr ""
+msgstr "קבוצה נוצרה בהצלחה"
 
 #: [groups]deleted
 msgid "Group deleted successfully"
-msgstr ""
+msgstr "קבוצה נמחקה בהצלחה"
 
 #: [groups]name_error
 msgid "Please provide a valid group name (4 characters minimum)"
-msgstr ""
+msgstr "אנא ספק שם קבוצה קביל (4 תווים לפחות)"
 
 #: [groups]no_creation
 msgid "You cannot create a new Group on this server"
-msgstr ""
+msgstr "אין באפשרותך ליצור קבוצה חדשה על שרת זה"
 
 #: [groups]sub
 msgid "%s subscribers"
-msgstr ""
+msgstr "%s מנויים"
 
 #: [groups]num
 msgid "%s posts"
-msgstr ""
+msgstr "%s פרסומים"
 
 #: [groups]disco_error
 msgid "This server doesn't exists"
-msgstr ""
+msgstr "שרת זה לא קיים"
 
 #: [help]faq
 msgid "Frequently Asked Questions"
@@ -1066,7 +1021,7 @@ msgstr "שיחה עם הצוות ?"
 
 #: [chatroom]button
 msgid "Add the chatroom"
-msgstr ""
+msgstr "הוסף חדר שיחה"
 
 #: [init]location
 msgid "Location node created"
@@ -1128,26 +1083,13 @@ msgstr "שגיאת סשן"
 msgid "Account successfully created"
 msgstr "חשבון נוצר בהצלחה"
 
-#: [error]xmpp_unauthorized
-msgctxt "[error]xmpp_unauthorized"
-msgid "Your XMPP server is unauthorized"
-msgstr ""
-
 #: [error]mec_error
 msgid "The server takes too much time to respond"
 msgstr "לשרת לוקח יותר מדי זמן להגיב"
 
-#: [error]websocket
-msgid "Movim cannot talk with the server, please try again later (Websocket connection error)"
-msgstr ""
-
 #: [error]impossible
 msgid "Impossible login"
-msgstr ""
-
-#: [error]title
-msgid "Oops!"
-msgstr "אופס!"
+msgstr "כניסה לא אפשרית"
 
 #: [error]default
 msgid "Unknown error"
@@ -1162,13 +1104,9 @@ msgid "Invalid password format"
 msgstr ""
 
 #: [error]unauthorized
-msgctxt "[error]unauthorized"
+#, fuzzy
 msgid "Your XMPP server is unauthorized"
-msgstr ""
-
-#: [error]conflict
-msgid "A Movim session is already open on an other device"
-msgstr ""
+msgstr "שרתך כאן ?"
 
 #: [error]wrong_account
 msgid "Movim failed to authenticate. You entered wrong data"
@@ -1198,7 +1136,7 @@ msgstr "חשבון אחר"
 msgid "No account yet ?"
 msgstr "אין חשבון עדיין ?"
 
-#: [form]whitelist.info
+#: [form]whitelist_info
 msgid "You can login with accounts from theses servers"
 msgstr ""
 
@@ -1216,10 +1154,14 @@ msgstr ""
 
 #: [menu]empty_title
 msgid "No news yet..."
-msgstr ""
+msgstr "אין חדשות עדיין..."
 
 #: [menu]empty
 msgid "Welcome on your news feed, here you will see all the posts published by your contacts and in the groups you have subscribed."
+msgstr ""
+
+#: [menu]discover [button]discover
+msgid "Discover"
 msgstr ""
 
 #: [menu]refresh
@@ -1228,7 +1170,7 @@ msgstr "רענון של כל הזרמים"
 
 #: [menu]public [post]public_yes
 msgid "This post is public"
-msgstr ""
+msgstr "פרסום זה הינו פומבי"
 
 #: [menu]all
 msgid "All"
@@ -1236,7 +1178,7 @@ msgstr "הכל"
 
 #: [menu]mine
 msgid "My publications"
-msgstr ""
+msgstr "הפרסומים שלי"
 
 #: [menu]contacts [page]contacts
 msgid "Contacts"
@@ -1244,7 +1186,7 @@ msgstr "אנשי קשר"
 
 #: [menu]add_post
 msgid "Add a post"
-msgstr ""
+msgstr "הוסף פרסום"
 
 #: [notifs]title
 msgid "Pending Invitations"
@@ -1262,17 +1204,17 @@ msgstr "הזנת חדשות"
 msgid "Discover and register to the groups you are interested in"
 msgstr ""
 
-#: [post]content [post]content_label
+#: [post]content [publish]content_label
 msgid "Content"
-msgstr ""
+msgstr "תוכן"
 
 #: [post]published
 msgid "Post published"
-msgstr ""
+msgstr "פרסום פורסם"
 
 #: [post]deleted
 msgid "Post deleted"
-msgstr ""
+msgstr "פרסום נמחק"
 
 #: [post]hot
 msgid "What's Hot"
@@ -1284,7 +1226,7 @@ msgstr ""
 
 #: [post]new [publish]new
 msgid "New post"
-msgstr ""
+msgstr "פרסום חדש"
 
 #: [post]repost
 msgid "This is a re-post from %s"
@@ -1296,19 +1238,19 @@ msgstr ""
 
 #: [post]blog_last
 msgid "Public posts from users"
-msgstr ""
+msgstr "פרסומים פומביים מאת משתמשים"
 
 #: [post]public
 msgid "Publish this post publicly?"
-msgstr ""
+msgstr "לפרסם את פרסום זה בפומבי?"
 
 #: [post]public_no
 msgid "This post is private"
-msgstr ""
+msgstr "פרסום זה הינו פרטי"
 
 #: [post]public_url
 msgid "Public URL of this post"
-msgstr ""
+msgstr "URL פומבי של פרסום זה"
 
 #: [post]delete_title [post]delete
 msgid "Delete this post"
@@ -1324,15 +1266,19 @@ msgstr ""
 
 #: [post]comments_disabled
 msgid "Comments disabled"
-msgstr ""
+msgstr "תגובות מנוטרלות"
 
 #: [post]comment_published
 msgid "Comment published"
+msgstr "תגובה פורסמה"
+
+#: [post]comment_deleted
+msgid "Comment deleted"
 msgstr ""
 
 #: [hello]blog_title
 msgid "Visit your public blog"
-msgstr ""
+msgstr "הבלוג האישי שלך"
 
 #: [hello]blog_text
 msgid "See your public posts and share them with all your contacts"
@@ -1340,7 +1286,7 @@ msgstr ""
 
 #: [hello]share_title
 msgid "Universal share button"
-msgstr ""
+msgstr "כפתור שיתוף אוניברסלי"
 
 #: [hello]share_text
 msgid "Bookmark or drag and drop the following button in your toolbar and use it on all the pages you want to share on Movim"
@@ -1352,11 +1298,11 @@ msgstr ""
 
 #: [hello]enter_title
 msgid "Oh! Hello!"
-msgstr ""
+msgstr "שלום!"
 
 #: [hello]enter_paragraph
 msgid "It seems that you're new there! Welcome on Movim!"
-msgstr ""
+msgstr "נראה כי את/ה חדש/ה פה! ברוכים הבאים לפרויקט Movim!"
 
 #: [hello]menu_title
 msgid "Check the Menu"
@@ -1364,6 +1310,14 @@ msgstr ""
 
 #: [hello]menu_paragraph
 msgid "All the main Movim features are accessible there. Don't hesitate to navigate through the pages to discover more!"
+msgstr ""
+
+#: [hello]profile_title
+msgid "Looks like you didn't complete your profile yet"
+msgstr ""
+
+#: [hello]profile_paragraph
+msgid "You can go in the Configuration page to describe yourself and put a nice picture"
 msgstr ""
 
 #: [status]disconnect
@@ -1386,41 +1340,37 @@ msgstr "מצב"
 msgid "Presence"
 msgstr "נוכחות"
 
-#: [status]online
-msgid "Online with Movim"
-msgstr ""
-
-#: [post]preview
+#: [publish]preview
 msgid "Preview"
 msgstr "תצוגה מקדימה"
 
-#: [post]help [page]help
+#: [publish]help [page]help
 msgid "Help"
 msgstr "עזרה"
 
-#: [post]help_more
+#: [publish]help_more
 msgid "More help"
-msgstr ""
+msgstr "עוד עזרה"
 
-#: [post]help_manual
+#: [publish]help_manual
 msgid "Markdown syntax manual"
 msgstr ""
 
-#: [post]content_text
+#: [publish]content_text
 msgid "You can format your content using Markdown"
 msgstr ""
 
-#: [post]link
+#: [publish]link
 msgid "Link"
 msgstr "קישור"
 
-#: [post]tags
+#: [publish]tags
 msgid "Tags"
-msgstr ""
+msgstr "תגיות"
 
-#: [post]gallery
+#: [publish]gallery
 msgid "This picture will be added to your gallery"
-msgstr ""
+msgstr "התמונה תתווסף לגלריה שלך"
 
 #: [publish]valid_url
 msgid "Please enter a valid url"
@@ -1432,23 +1382,23 @@ msgstr ""
 
 #: [publish]no_title
 msgid "Please provide a title"
-msgstr ""
+msgstr "אנא ספק כותרת"
 
 #: [publish]edit
 msgid "Edit post"
-msgstr ""
+msgstr "ערוך פרסום"
 
 #: [publish]title
 msgid "Publish"
-msgstr ""
+msgstr "פרסם"
 
 #: [publish]attach
 msgid "Add a file or a picture to your post"
-msgstr ""
+msgstr "הוסף קובץ או תמונה לפרסום שלך"
 
 #: [publish]no_publication
 msgid "You cannot publish a post on this Group"
-msgstr ""
+msgstr "אין באפשרותך לפרסם בקבוצה זו"
 
 #: [publish]form_filled
 msgid "Some fields have been filled in. Do you still want to go back and loose their content?"
@@ -1460,20 +1410,19 @@ msgstr ""
 
 #: [publish]add_text_label
 msgid "Add some text"
-msgstr ""
+msgstr "הוסף טקסט"
 
 #: [rooms]add
 msgid "Add a chatroom"
 msgstr "הוסף חדר שיחה"
 
 #: [rooms]edit
-#, fuzzy
 msgid "Edit a chatroom"
-msgstr "הוסף חדר שיחה"
+msgstr ""
 
 #: [rooms]empty_text1
 msgid "You don't have any chatroom yet."
-msgstr ""
+msgstr "אין לך חדר שיחה עדיין."
 
 #: [rooms]empty_text2
 msgid "Add one by clicking on the add button."
@@ -1483,9 +1432,21 @@ msgstr ""
 msgid "Chatrooms"
 msgstr "חדרי שיחה"
 
+#: [chatrooms]id
+msgid "Chat Room ID"
+msgstr "מזהה חדר שיחה"
+
 #: [chatrooms]name_placeholder
 msgid "My Favorite Room"
 msgstr "החדר המועדף עליי"
+
+#: [chatrooms]bad_id
+msgid "Bad Chatroom ID"
+msgstr "מזהה חדר שיחה רע"
+
+#: [chatrooms]empty_name
+msgid "Empty name"
+msgstr "שם ריק"
 
 #: [chatrooms]users
 msgid "Users in the room"
@@ -1497,19 +1458,23 @@ msgstr ""
 
 #: [chatrooms]conflict
 msgid "Username already taken"
-msgstr ""
+msgstr "שם משתמש כבר תפוס"
+
+#: [bookmarks]updated
+msgid "Bookmarks updated"
+msgstr "סימניות עודכנו"
 
 #: [room]anonymous_title
 msgid "Public chatroom"
-msgstr ""
+msgstr "חדר שיחה פומבי"
 
 #: [room]no_room
 msgid "Please provide a room address"
-msgstr ""
+msgstr "אנא ספק כתובת חדר"
 
 #: [room]anonymous_text1
 msgid "You are currently logued as an anonymous user."
-msgstr ""
+msgstr "אתה כעת מחובר בתור משתמש אלמוני."
 
 #: [room]anonymous_text2
 msgid "You can join using your own account or create one on the login page by loging out using the cross in the top-right corner."
@@ -1521,7 +1486,7 @@ msgstr ""
 
 #: [room]nick
 msgid "Your nickname"
-msgstr ""
+msgstr "שם כינוי"
 
 #: [roster]ungrouped
 msgid "Ungrouped"
@@ -1549,15 +1514,19 @@ msgstr "אנא הזן מזהה Jabber תקף"
 
 #: [roster]no_contacts_title
 msgid "No contacts ?"
-msgstr ""
+msgstr "אין אנשי קשר ?"
 
 #: [roster]no_contacts_text
-msgid "You can add one using the + button bellow"
+msgid "You can add one using the + button below"
 msgstr ""
 
 #: [roster]show_hide
 msgid "Show/Hide"
 msgstr "הצג/הסתר"
+
+#: [roster]add_title
+msgid "Add a contact"
+msgstr ""
 
 #: [roster]add_contact_info1
 msgid "Enter the Jabber ID of your contact."
@@ -1579,17 +1548,21 @@ msgstr "תוצאות"
 msgid "Contact added"
 msgstr "איש קשר התווסף"
 
+#: [roster]updated
+msgid "Contact updated"
+msgstr "איש קשר עודכן"
+
 #: [roster]deleted
 msgid "Contact deleted"
 msgstr "איש קשר נמחק"
 
 #: [roster]search
 msgid "Search in your contacts"
-msgstr ""
+msgstr "חפש בתוך אנשי הקשר שלך"
 
 #: [roster]search_pod
 msgid "Search a contact"
-msgstr ""
+msgstr "חפש איש קשר"
 
 #: [search]keyword
 msgid "What are you looking for?"
@@ -1597,14 +1570,6 @@ msgstr ""
 
 #: [search]subtitle
 msgid "Open me using Ctrl + M"
-msgstr ""
-
-#: [share]error
-msgid "This is not a valid url"
-msgstr ""
-
-#: [share]success
-msgid "Sharing the URL"
 msgstr ""
 
 #: [statistics]title
@@ -1653,10 +1618,22 @@ msgstr "לא צוין איש קשר"
 
 #: [upload]title
 msgid "Upload a file"
-msgstr ""
+msgstr "העלה קובץ"
 
 #: [upload]choose
 msgid "Choose a file to upload"
+msgstr "בחר קובץ להעלאה"
+
+#: [upload]info
+msgid "Large pictures will be resized and compressed"
+msgstr ""
+
+#: [upload]error_filesize
+msgid "File too large"
+msgstr ""
+
+#: [upload]error_failed
+msgid "Upload failed"
 msgstr ""
 
 #: [vcard]title [page]profile
@@ -1693,6 +1670,10 @@ msgstr "Skype"
 
 #: [accounts]yahoo
 msgid "Yahoo Account"
+msgstr "חשבון Yahoo"
+
+#: [privacy]my_profile
+msgid "Go to my profile page"
 msgstr ""
 
 #: [privacy]privacy_title
@@ -1704,7 +1685,7 @@ msgid "Is this profile public ?"
 msgstr "האם דיוקן זה הינו פומבי ?"
 
 #: [privacy]privacy_info
-msgid "Please pay attention ! By making your profile public, all the information listed bellow will be available for all the Movim users and on the whole Internet."
+msgid "Please pay attention ! By making your profile public, all the information listed below will be available for all the Movim users and on the whole Internet."
 msgstr ""
 
 #: [save]submit [button]submit
@@ -1723,9 +1704,9 @@ msgstr "אין לך Javascript מאופשר.  עליך לאפשר Javascript ב�
 msgid "Movim is a kickass distributed social networking platform that protect your privacy an comes with a set of awesome features."
 msgstr "Movim היא פלטפורמת רשת חברתית מבוזרת אשר שומרת על הפרטיות שלך ומגיעה עם סט של תכונות נהדרות."
 
-#: [page]administration
-msgid "Administration"
-msgstr "ניהול"
+#: [global]loading
+msgid "Loading…"
+msgstr ""
 
 #: [page]home
 msgid "Home"
@@ -1788,16 +1769,17 @@ msgid "Pods"
 msgstr "שרתים"
 
 #: [page]share
+msgctxt "[page]share"
 msgid "Share"
 msgstr ""
 
 #: [page]room
 msgid "Room"
-msgstr ""
+msgstr "חדר"
 
 #: [page]tag
 msgid "Tag"
-msgstr ""
+msgstr "תגית"
 
 #: [error]error
 msgid "Error: %s"
@@ -1818,6 +1800,18 @@ msgstr "אירוע מבוקש '%s' לא רשום."
 #: [error]whoops
 msgid "Whoops!"
 msgstr "אופס!"
+
+#: [error]websocket
+msgid "Movim cannot talk with the server, please try again later"
+msgstr ""
+
+#: [error]oops
+msgid "Oops!"
+msgstr "אופס!"
+
+#: [button]call
+msgid "Call"
+msgstr ""
 
 #: [button]validate
 msgid "Validate"
@@ -1885,11 +1879,11 @@ msgstr "כעת מתחבר"
 
 #: [button]bool_yes
 msgid "Yes"
-msgstr ""
+msgstr "כן"
 
 #: [button]bool_no
 msgid "No"
-msgstr ""
+msgstr "לא"
 
 #: [button]return
 msgid "Return"
@@ -1901,20 +1895,24 @@ msgstr "קבלה"
 
 #: [button]refuse
 msgid "Refuse"
-msgstr ""
+msgstr "סרב"
 
 #: [button]next
 msgid "Next"
-msgstr ""
+msgstr "הבא"
 
 #: [button]previous
 msgid "Previous"
-msgstr ""
+msgstr "הקודם"
 
 #: [button]search
-#, fuzzy
 msgid "Search"
-msgstr "מרץ"
+msgstr ""
+
+#: [button]share
+msgctxt "[button]share"
+msgid "Share"
+msgstr ""
 
 #: [day]title
 msgid "Day"
@@ -2464,7 +2462,7 @@ msgstr "אתמול"
 
 #: [date]ago
 msgid "%d days ago"
-msgstr ""
+msgstr "לפני %d ימים"
 
 #: [date]day
 msgid "day"
@@ -2500,11 +2498,11 @@ msgstr "אין איש קשר"
 
 #: [post]no_comments
 msgid "No comments yet"
-msgstr ""
+msgstr "אין תגובות עדיין"
 
 #: [post]no_comments_stream
 msgid "No comments stream"
-msgstr ""
+msgstr "אין זרם תגובות"
 
 #: [post]no_load
 msgid "Your feed cannot be loaded."
@@ -2528,7 +2526,7 @@ msgstr "הצג את התגובות הישנות יותר"
 
 #: [post]comments_loading
 msgid "Loading comments..."
-msgstr ""
+msgstr "כעת טוען תגובות..."
 
 #: [post]comments_get
 msgid "Get the comments"
@@ -2564,6 +2562,10 @@ msgstr "פרסום איש קשר"
 
 #: [post]comments
 msgid "Comments"
+msgstr "תגובות"
+
+#: [post]original_deleted
+msgid "Original post deleted"
 msgstr ""
 
 #: [api]error
@@ -2572,4 +2574,7 @@ msgstr "API אינו נגיש, נסה שוב מאוחר יותר"
 
 #: [field]type_here
 msgid "Type here"
-msgstr ""
+msgstr "הקלד כאן"
+
+#~ msgid "Online with Movim"
+#~ msgstr "מקוון עם Movim"

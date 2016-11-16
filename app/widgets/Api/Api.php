@@ -1,21 +1,7 @@
 <?php
 
-/**
- * @package Widgets
- *
- * @file Statistics.php
- * This file is part of MOVIM.
- *
- * @brief The administration widget.
- *
- * @author Timothée Jaussoin <edhelas@gmail.com>
- * *
- * Copyright (C)2014 MOVIM project
- *
- * See COPYING for licensing information.
- */
-
-class Api extends \Movim\Widget\Base {
+class Api extends \Movim\Widget\Base
+{
     function load()
     {
     }
@@ -29,7 +15,7 @@ class Api extends \Movim\Widget\Base {
                 '<a href="http://api.movim.eu/" target="_blank">',
                 '</a>'));
 
-        $json = requestURL(MOVIM_API.'status', 1, array('uri' => BASE_URI));
+        $json = requestURL(MOVIM_API.'status', 3, array('uri' => BASE_URI));
         $json = json_decode($json);
 
         $cd = new \Modl\ConfigDAO();
@@ -52,20 +38,20 @@ class Api extends \Movim\Widget\Base {
 
     function ajaxRegister()
     {
-        $cd = new \Modl\ConfigDAO();
-        $config = $cd->get();
+        $cd = new \Modl\ConfigDAO;
 
         $json = requestURL(
             MOVIM_API.'register',
-            1,
-            array(
+            3,
+            [
                 'uri' => BASE_URI,
-                'rewrite' => false));
+                'rewrite' => false
+            ]);
 
         $json = json_decode($json);
 
         if(isset($json) && $json->status == 200) {
-            RPC::call('movim_reload_this');
+            RPC::call('MovimUtils.reloadThis');
             Notification::append(null, $this->__('api.conf_updated'));
         }
     }
@@ -78,7 +64,6 @@ class Api extends \Movim\Widget\Base {
         $config->unregister = !$config->unregister;
         $cd->set($config);
 
-        RPC::call('movim_reload_this');
-        RPC::commit();
+        RPC::call('MovimUtils.reloadThis');
     }
 }

@@ -13,17 +13,17 @@ var Chats = {
                     Rooms.refresh();
 
                     Chat_ajaxGet(this.dataset.jid);
-                    Chats.reset(items);
+                    MovimUtils.removeClassInList('active', items);
                     Notification_ajaxClear('chat|' + this.dataset.jid);
                     Notification.current('chat|' + this.dataset.jid);
                     document.querySelector('#chat_widget').dataset.jid = this.dataset.jid;
-                    movim_add_class(this, 'active');
-                }
+                    MovimUtils.addClass(this, 'active');
+                };
 
                 items[i].onmousedown = function(e) {
                     if(e.which == 2) {
                         Notification_ajaxClear('chat|' + this.dataset.jid);
-                        Notification.current('chat');
+                        Notification.current('');
                         Chats_ajaxClose(this.dataset.jid);
                         delete document.querySelector('#chat_widget').dataset.jid;
                         MovimTpl.hidePanel();
@@ -31,29 +31,20 @@ var Chats = {
                 }
             }
 
-            movim_remove_class(items[i], 'active');
+            MovimUtils.removeClass(items[i], 'active');
 
             i++;
         }
-    },
 
-    prepend: function(from, html) {
-        movim_delete(from + '_chat_item');
-        movim_prepend('chats_widget_list', html);
-        Chats.refresh();
         Notification_ajaxGet();
     },
-
-    reset: function(list) {
-        for(i = 0; i < list.length; i++) {
-            movim_remove_class(list[i], 'active');
-        }
+    prepend: function(from, html) {
+        MovimTpl.remove('#' + MovimUtils.cleanupId(from + '_chat_item'));
+        MovimTpl.prepend('#chats_widget_list', html);
+        Chats.refresh();
+        Notification_ajaxGet();
     }
-}
-
-movim_add_onload(function(){
-    Notification.current('chat');
-});
+};
 
 MovimWebsocket.attach(function() {
     Chats_ajaxGet();

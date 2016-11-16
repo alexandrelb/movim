@@ -13,6 +13,17 @@ span.icon img {
     max-height: 100%;
 }
 
+span.icon.top {
+    position: relative;
+    top: -1.5rem;
+    width: 100%;
+    height: 10rem;
+    line-height: 10rem;
+    display: block;
+    margin: 0;
+    left: 0;
+}
+
 span.icon.primary.thumb {
     left: 0;
     width: 7rem;
@@ -21,7 +32,11 @@ span.icon.primary.thumb {
     margin: 0;
     line-height: 7.5rem;
 }
-
+/*
+*[dir="rtl"] span.icon.primary.thumb {
+    right: 0;
+}
+*/
 li.oppose span.icon {
     left: auto;
     right: 2rem;

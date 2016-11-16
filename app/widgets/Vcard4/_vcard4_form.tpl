@@ -1,12 +1,16 @@
 <ul class="list middle">
     <li class="subheader">
-        <p>{$c->__('privacy.privacy_title')}</p>
+        <p>
+            <span class="info">
+                <a href="{$c->route('contact', $me->jid)}">
+                    {$c->__('privacy.my_profile')}
+                </a>
+            </span>
+            {$c->__('privacy.privacy_title')}
+        </p>
     </li>
     <li>
-        <span class="primary icon bubble color blue">
-            <i class="zmdi zmdi-shield-security"></i>
-        </span>
-        <span class="control">
+        <span class="primary">
             <form>
                 <div class="control action">
                     <div class="checkbox">
@@ -121,12 +125,12 @@
     </div>
 
     <div class="block">
-        <input type="url" name ="url" class="content" value="{$me->url}">
+        <input type="url" name ="url" class="content" value="{$me->url}" placeholder="https://mywebsite.com/">
         <label for="url">{$c->__('general.website')}</label>
     </div>
 
     <div class="block large">
-        <textarea name="desc" id="desctext" class="content" onkeyup="movim_textarea_autoheight(this);">{$desc}</textarea>
+        <textarea name="desc" id="desctext" class="content" onkeyup="MovimUtils.textareaAutoheight(this);">{$desc}</textarea>
         <label for="desc">{$c->__('general.about')}</label>
     </div>
 
@@ -176,7 +180,7 @@
         <a
             onclick="
                 {$submit}
-                movim_button_save('#vcard4validate');
+                MovimUtils.buttonSave('#vcard4validate');
                 this.value = '{$c->__('Submitting')}';
                 this.className='button oppose inactive';"
             class="button color oppose"

@@ -26,6 +26,11 @@ form > div > label {
     left: 0; /* We force the left align */
 }
 
+
+*[dir="rtl"] form > div > label {
+    right: 0;
+}
+
 form > div.icon {
     padding-left: 9rem;
 }
@@ -51,6 +56,11 @@ form > div > .select:after {
     pointer-events: none;
 }
 
+*[dir="rtl"] form > div > .select::after {
+    left: 1.25rem;
+    right: auto;
+}
+
 form > div > .select:hover:after {
     color: #555;
 }
@@ -62,7 +72,7 @@ form > div > .select select {
     width: 100%;
     background-color: transparent;
     background-image: none;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
 }
 
 main > header form > div:not(.clear):not(.control) {
@@ -152,6 +162,7 @@ form > div .checkbox {
     width: 4.5rem;
     height: 5rem;
     top: 1rem;
+    direction: ltr;
 }
 
 form > div .checkbox:before,
@@ -213,7 +224,8 @@ form > div .radio > input[type="radio"] + label {
     border-style: solid;
     border-color: gray;
     transition: box-shadow 0.1s ease;
-    margin-top: 1.25rem;
+    margin: 1.25rem;
+    margin-bottom: 0;
 }
 
 form > div .radio > input[type="radio"] + label:hover {
@@ -345,7 +357,7 @@ input[type=button].flat:focus {
 }
 
 .button.action.active > i {
-    transform: rotate(135deg);
+    transform: rotate(45deg);
 }
 
 li.action div.action .button {
@@ -384,7 +396,7 @@ header.big ~ .button.action {
     height: 6rem;
     padding: 0;
     opacity: 0;
-    transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0.15s;
     pointer-events: none;
 }
 
@@ -408,6 +420,10 @@ header.big ~ .button.action {
     line-height: 7rem;
     height: auto;
     width: 7rem;
+}
+
+.button i {
+    margin: 0 0.5rem;
 }
 
 /* The textarea hidden div */

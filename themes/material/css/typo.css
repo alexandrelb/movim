@@ -17,8 +17,8 @@ article section p {
     line-height: inherit;
 }
 
-article section content ul li,
-article section content ol li {
+ul:not(.list):not(.tabs):not(.grid):not(.actions) > li,
+ol:not(.list):not(.tabs):not(.grid) > li {
     font-size: 2rem;
     line-height: 3rem;
     padding-left: 2rem;
@@ -27,23 +27,23 @@ article section content ol li {
     margin: 1rem auto;
 }
 
-article section content ul li > * {
+ul:not(.list):not(.tabs):not(.grid) > li > * {
     display: inline;
 }
 
-article section content ul li {
+ul:not(.list):not(.tabs):not(.grid):not(.actions) > li {
     list-style-type: disc;
 }
 
-article section content ul ul li {
+ul:not(.list):not(.tabs):not(.grid) > li > ul:not(.list):not(.tabs):not(.grid) > li {
     list-style-type: circle;
 }
 
-article section content ul ul ul li {
+ul:not(.list):not(.tabs):not(.grid) > li > ul:not(.list):not(.tabs):not(.grid) > li > ul:not(.list):not(.tabs):not(.grid) > li {
     list-style-type: square;
 }
 
-article section content ol li {
+ol:not(.list):not(.tabs):not(.grid) > li {
     list-style-type: decimal;
 }
 
@@ -65,7 +65,7 @@ xmp {
 code {
     background-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.6);
-    padding: 0.3rem 0.75rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 0.3rem;
 }
 
@@ -78,6 +78,7 @@ xmp {
     border-left: 1rem solid gray;
     background-color: #333;
     white-space:pre-wrap; word-wrap:break-word;
+    direction: ltr;
 }
 
 pre code {
@@ -144,5 +145,9 @@ dl dt {
 dl dd {
     text-align: left;
     width: 74%;
+}
+
+*[dir="rtl"] dl dd {
+    text-align: right;
 }
 

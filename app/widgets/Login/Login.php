@@ -1,21 +1,4 @@
 <?php
-/**
- * @package Widgets
- *
- * @file Login.php
- * This file is part of MOVIM.
- *
- * @brief The login form.
- *
- * @author Timothée Jaussoin <edhelas@gmail.com>
- *
- * @version 1.0
- * @date 07 December 2011
- *
- * Copyright (C)2010 MOVIM project
- *
- * See COPYING for licensing information.
- */
 
 use Moxl\Xec\Action\Storage\Get;
 use Moxl\Xec\Action\Roster\GetList;
@@ -35,9 +18,6 @@ class Login extends \Movim\Widget\Base
 
     function onStart($packet)
     {
-        $pd = new \Modl\PresenceDAO();
-        $pd->clearPresence();
-
         $session = \Session::start();
 
         if($session->get('mechanism') != 'ANONYMOUS') {
@@ -62,12 +42,12 @@ class Login extends \Movim\Widget\Base
     function onConfig($packet)
     {
         $this->user->createDir();
-        RPC::call('Login.post', $this->user->getLogin(), Route::urlize('root'));
+        RPC::call('Login.post', $this->user->getLogin(), $this->route('root'));
     }
 
     function display()
     {
-        $submit = $this->call('ajaxLogin', "movim_form_to_json('login')");
+        $submit = $this->call('ajaxLogin', "MovimUtils.formToJson('login')");
 
         $cd = new \Modl\ConfigDAO();
         $config = $cd->get();
@@ -105,8 +85,8 @@ class Login extends \Movim\Widget\Base
 
     function showErrorBlock($error)
     {
-        RPC::call('movim_fill', 'error', $this->prepareError($error));
-        RPC::call('movim_add_class', '#login_widget', 'error');
+        RPC::call('MovimTpl.fill', '#error', $this->prepareError($error));
+        RPC::call('MovimUtils.addClass', '#login_widget', 'error');
     }
 
     function prepareError($error = 'default')
@@ -153,7 +133,7 @@ class Login extends \Movim\Widget\Base
 
     function ajaxLogin($form)
     {
-        $username = $form->username->value;
+        $username = strtolower($form->username->value);
         $password = $form->password->value;
 
         $this->doLogin($username, $password);
@@ -171,8 +151,8 @@ class Login extends \Movim\Widget\Base
         $config = $cd->get();
 
         // First we check the form
-        $validate_login   = Validator::email()->length(6, 40);
-        $validate_password = Validator::stringType()->length(4, 40);
+        $validate_login   = Validator::stringType()->length(1, 254);
+        $validate_password = Validator::stringType()->length(1, 128);
 
         if(!$validate_login->validate($login)) {
             $this->showErrorBlock('login_format');
@@ -203,31 +183,25 @@ class Login extends \Movim\Widget\Base
         $here = $sd->getHash(sha1($username.$password.$host));
 
         if($here) {
-        //if($s->get('hash') == sha1($username.$password.$host)) {
             RPC::call('Login.setCookie', $here->session);
-            RPC::call('movim_redirect', Route::urlize('main'));
-            $this->showErrorBlock('conflict');
+            RPC::call('MovimUtils.redirect', $this->route('main'));
             return;
         }
 
         $s = Session::start();
 
-        // We try to get the domain
-        $domain = \Moxl\Utils::getDomain($host);
-
-        // We launch the XMPP socket
-        RPC::call('register', $host);
-
         // We create a new session or clear the old one
         $s->set('password', $password);
         $s->set('username', $username);
         $s->set('host', $host);
-        $s->set('domain', $domain);
         $s->set('jid', $login);
         $s->set('hash', sha1($username.$password.$host));
 
         $s = Sessionx::start();
-        $s->init($username, $password, $host, $domain);
+        $s->init($username, $password, $host);
+
+        // We launch the XMPP socket
+        RPC::call('register', $host);
 
         \Moxl\Stanza\Stream::init($host);
     }
@@ -236,19 +210,21 @@ class Login extends \Movim\Widget\Base
     {
         $sessions = json_decode($sessions);
 
-        $sessions_grabbed = array();
+        $sessions_grabbed = [];
 
         $cd = new \Modl\ContactDAO;
 
-        foreach($sessions as $s) {
-            $c = $cd->get($s);
+        if(is_array($sessions)) {
+            foreach($sessions as $s) {
+                $c = $cd->get($s);
 
-            if($c != null) {
-                array_push($sessions_grabbed, $c);
-            } else {
-                $c = new \Modl\Contact;
-                $c->jid = $s;
-                array_push($sessions_grabbed, $c);
+                if($c != null) {
+                    array_push($sessions_grabbed, $c);
+                } else {
+                    $c = new \Modl\Contact;
+                    $c->jid = $s;
+                    array_push($sessions_grabbed, $c);
+                }
             }
         }
 
@@ -256,7 +232,7 @@ class Login extends \Movim\Widget\Base
         $sessionshtml->assign('sessions', $sessions_grabbed);
         $sessionshtml->assign('empty', new \Modl\Contact);
 
-        RPC::call('movim_fill', 'sessions', $sessionshtml->draw('_login_sessions', true));
+        RPC::call('MovimTpl.fill', '#sessions', $sessionshtml->draw('_login_sessions', true));
         RPC::call('Login.refresh');
     }
 }

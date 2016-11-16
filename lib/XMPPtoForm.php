@@ -110,29 +110,13 @@ class XMPPtoForm{
         $div->appendChild($label);
     }
     private function outTitle($s){
-        $ul = $this->html->createElement('ul');
-        $ul->setAttribute('class', 'list thin');
-        $this->html->appendChild($ul);
-
-        $li = $this->html->createElement('li');
-        $title = $this->html->createElement('p', $s);
-        $title->setAttribute('class', 'normal line');
-        $li->appendChild($title);
-
-        $ul->appendChild($li);
+        $title = $this->html->createElement('h3', $s);
+        $this->html->appendChild($title);
     }
 
     private function outP($s){
-        $ul = $this->html->createElement('ul');
-        $ul->setAttribute('class', 'list thin');
-        $this->html->appendChild($ul);
-
-        $li = $this->html->createElement('li');
-        $ul->appendChild($li);
-
         $title = $this->html->createElement('p', $s);
-        $title->setAttribute('class', 'normal line');
-        $li->appendChild($title);
+        $this->html->appendChild($title);
     }
 
     private function outUrl($s) {
@@ -182,6 +166,7 @@ class XMPPtoForm{
 
         $label = $this->html->createElement('label', $s['label']);
         $label->setAttribute('for', $s['var']);
+        $label->setAttribute('title', $s['label']);
         $container->appendChild($label);
     }
 
@@ -212,10 +197,11 @@ class XMPPtoForm{
 
         $label = $this->html->createElement('label', $s['label']);
         $label->setAttribute('for', $s['var']);
+        $label->setAttribute('title', $s['label']);
         $container->appendChild($label);
     }
 
-    private function outInput($s, $type, $multiple){
+    private function outInput($s, $type = false, $multiple){
         $container = $this->html->createElement('div');
         $this->html->appendChild($container);
 
@@ -224,7 +210,12 @@ class XMPPtoForm{
         $input->setAttribute('name', $s['var']);
         $input->setAttribute('type', $type);
         $input->setAttribute('title', $s->desc);
-        $input->setAttribute('type', $s['type']);
+
+        if($type) {
+            $input->setAttribute('type', $type);
+        } else {
+            $input->setAttribute('type', $s['type']);
+        }
         $input->setAttribute('label', $s['label']);
 
         if($s->required)
@@ -243,6 +234,7 @@ class XMPPtoForm{
 
         $label = $this->html->createElement('label', $s['label']);
         $label->setAttribute('for', $s['var']);
+        $label->setAttribute('title', $s['label']);
         $container->appendChild($label);
     }
 
@@ -311,6 +303,7 @@ class XMPPtoForm{
 
         $label = $this->html->createElement('label', $s['label']);
         $label->setAttribute('for', $s['var']);
+        $label->setAttribute('title', $s['label']);
         $container->appendChild($label);
     }
 }

@@ -1,9 +1,36 @@
 Movim Changelog
 ================
 
-v0.9.1 (trunk)
+v0.11 (trunk)
 ---------------------------
+ * Rewrite blocking code to asyncrone promises
+ * Navigation improvement
+ * Add previous/next post shortcut in the footer of each posts
+ * Highlight mentionned messages in chatrooms
+ * Non alpha-numeric Pubsub items and nodes support
+ * Non alpha-numeric JID support
+ * Fix Markdown links with underscores
+ * Fix two-way contact subscription button in Contact
+ * New simplified and optimized Roster
+ * Improved search (global and roster)
+ * CSS fixes
+ * Refactoring of the groups page UI and UX
+ * Add (small) picture embeding in chats
+ * Various speed optimisation
+ * Add reply feature of existing posts
+
+v0.10
+---------------------------
+ * Resize and compress large pictures in Upload
+ * Refactor MovimWebsocket and fix disconnection issues
+ * Remove and cleanup old code
+ * Handle errors when uploading large files
+ * New bubble merging algorythm in the Chat
+ * Improve UI and mobile UX on low resolution devices
+ * New widget Drawer used for the stickers and the search form
+ * Fix behaviour for Android and Electron packages
  * Fix Pubsub metadata handling for some XMPP servers
+ * Add global search
  * Add silent notifications for chatrooms
  * Add alternate nickname support (adding "_") when joining a chatroom
  * Allow room configuration edition

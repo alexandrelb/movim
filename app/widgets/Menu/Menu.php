@@ -10,8 +10,21 @@ class Menu extends \Movim\Widget\Base
     {
         $this->registerEvent('post', 'onPost');
         $this->registerEvent('post_retract', 'onRetract');
+        $this->registerEvent('pubsub_postdelete', 'onRetract');
+        $this->registerEvent('pubsub_getitem_handle', 'onHandle');
+
         $this->addjs('menu.js');
         $this->addcss('menu.css');
+    }
+
+    function onHandle($packet)
+    {
+        if(is_array($packet->content)
+        && isset($packet->content['nodeid'])) {
+            $this->onRetract($packet);
+        } else {
+            $this->onPost($packet);
+        }
     }
 
     function onRetract($packet)
@@ -26,17 +39,18 @@ class Menu extends \Movim\Widget\Base
         $view->assign('refresh', $this->call('ajaxGetAll'));
 
         RPC::call('movim_posts_unread', $count);
-        RPC::call('movim_fill', 'menu_refresh', $view->draw('_menu_refresh', true));
+        RPC::call('MovimTpl.fill', '#menu_refresh', $view->draw('_menu_refresh', true));
     }
 
     function onPost($packet)
     {
         $pd = new \Modl\PostnDAO;
-        $since = Cache::c('since');
+        $since = \Movim\Cache::c('since');
         $count = $pd->getCountSince($since);
         $post = $packet->content;
 
         if($count > 0
+        && is_object($post)
         && (strtotime($post->published) > strtotime($since))) {
             if($post->isMicroblog()) {
                 $cd = new \Modl\ContactDAO;
@@ -58,11 +72,13 @@ class Menu extends \Movim\Widget\Base
                         $this->route('news', $post->nodeid)
                     );
             } else {
+                $logo = ($post->logo) ? $post->getLogo() : null;
+
                 Notification::append(
                     'news',
                     $post->title,
                     $post->node,
-                    null,
+                    $logo,
                     2,
                     $this->route('news', $post->nodeid)
                 );
@@ -102,9 +118,9 @@ class Menu extends \Movim\Widget\Base
         $html = $this->prepareList($type, $server, $node, $page);
 
         if($page > 0) {
-            RPC::call('movim_append', 'menu_wrapper', $html);
+            RPC::call('MovimTpl.append', '#menu_wrapper', $html);
         } else {
-            RPC::call('movim_fill', 'menu_widget', $html);
+            RPC::call('MovimTpl.fill', '#menu_widget', $html);
             RPC::call('movim_posts_unread', 0);
         }
         RPC::call('Menu.refresh');
@@ -129,12 +145,11 @@ class Menu extends \Movim\Widget\Base
     function prepareList($type = 'all', $server = null, $node = null, $page = 0) {
         $view = $this->tpl();
         $pd = new \Modl\PostnDAO;
-        $count = $pd->getCountSince(Cache::c('since'));
-
+        $count = $pd->getCountSince(\Movim\Cache::c('since'));
         // getting newer, not older
         if($page == 0 || $page == ""){
             $count = 0;
-            Cache::c('since', date(DATE_ISO8601, strtotime($pd->getLastDate())));
+            \Movim\Cache::c('since', date(DATE_ISO8601, strtotime($pd->getLastDate())));
         }
 
         $next = $page + 1;

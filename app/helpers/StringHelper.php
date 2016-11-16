@@ -1,7 +1,7 @@
 <?php
 
 use HeyUpdate\Emoji\Emoji;
-use HeyUpdate\Emoji\EmojiIndex;
+use HeyUpdate\Emoji\Index\CompiledIndex;
 
 /**
  * @desc A singleton wrapper for the Emoji library
@@ -14,25 +14,25 @@ class MovimEmoji
 
     protected function __construct()
     {
-        $cd = new \Modl\ConfigDAO();
+        $cd = new \Modl\ConfigDAO;
         $config = $cd->get();
         $this->_theme = $config->theme;
 
-        $this->_emoji = new Emoji(new EmojiIndex(), $this->getPath());
+        $this->_emoji = new Emoji(new CompiledIndex, $this->getPath());
     }
 
     public function replace($string)
     {
-        $this->_emoji->setAssetUrlFormat($this->getPath());
+        $this->_emoji->setImageHtmlTemplate('<img alt="{{name}}" class="emoji" src="'.$this->getPath().'">');
         $string = $this->_emoji->replaceEmojiWithImages($string);
-        $this->_emoji->setAssetUrlFormat($this->getPath());
+        $this->_emoji->setImageHtmlTemplate('<img alt=":%s:" class="emoji" src="'.$this->getPath().'">');
 
         return $string;
     }
 
     private function getPath()
     {
-        return BASE_URI . 'themes/' . $this->_theme . '/img/emojis/svg/%s.svg';
+        return BASE_URI . 'themes/' . $this->_theme . '/img/emojis/svg/{{unicode}}.svg';
     }
 
     public static function getInstance()
@@ -47,7 +47,7 @@ class MovimEmoji
 function addUrls($string, $preview = false) {
     // Add missing links
     return preg_replace_callback(
-        "/([\w\"'>]+\:\/\/[\w-?'&;#+,%:~=\.\/\@\(\)]+)/u", function ($match) use($preview) {
+        "/([\w\"'>]+\:\/\/[\w-\*?'&;!#+,%:~=\.\/\@\(\)]+)/u", function ($match) use($preview) {
             if(!in_array(substr($match[0], 0, 1), array('>', '"', '\''))) {
                 $content = $match[0];
 
@@ -107,7 +107,7 @@ function prepareString($string, $large = false, $preview = false) {
  */
 function explodeURI($uri) {
     $arr = parse_url(urldecode($uri));
-    $result = array();
+    $result = [];
 
     if(isset($arr['query'])) {
         $query = explode(';', $arr['query']);
@@ -140,7 +140,7 @@ function echapJid($jid)
  */
 function echapJS($string)
 {
-    return str_replace("\\", "\\\\", $string);
+    return str_replace(["\\", "'"], ["\\\\", "\\'"], $string);
 }
 
 /*
@@ -226,8 +226,9 @@ function colorize($string, $color) {
  * @param string
  * @return string
  */
-function stringToColor($string) {
-    $colors = array(
+function stringToColor($string)
+{
+    $colors = [
         0 => 'red',
         1 => 'purple',
         2 => 'indigo',
@@ -235,15 +236,11 @@ function stringToColor($string) {
         4 => 'green',
         5 => 'orange',
         6 => 'yellow',
-        7 => 'brown');
+        7 => 'brown'
+    ];
 
-    $s = substr(base_convert(sha1($string), 15, 10), 0, 10);
-
-    if($colors[$s%8]) {
-        return $colors[$s%8];
-    } else {
-        return 'orange';
-    }
+    $s = abs(crc32($string));
+    return $colors[$s%8];
 }
 
 /**
@@ -267,12 +264,30 @@ function purifyHTML($string)
 }
 
 /**
+ * Check if a string is RTL
+ * @param string
+ * @return string
+ */
+function isRTL($string)
+{
+    return preg_match('/\p{Arabic}|\p{Hebrew}/u', $string);
+}
+
+/**
  * Return the first two letters of a string
  * @param string
  * @return string
  */
 function firstLetterCapitalize($string) {
     return ucfirst(strtolower(mb_substr($string, 0, 2)));
+}
+
+/** Return a clean string that can be used for HTML ids
+ * @param string
+ * @return string
+ */
+function cleanupId($string) {
+    return "id-" . strtolower(preg_replace('/([^a-z0-9]+)/i', '-', $string));
 }
 
 /**

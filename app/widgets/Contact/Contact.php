@@ -4,33 +4,54 @@ use Moxl\Xec\Action\Roster\UpdateItem;
 use Moxl\Xec\Action\Vcard4\Get;
 use Respect\Validation\Validator;
 use Moxl\Xec\Action\Pubsub\GetItems;
+use Moxl\Xec\Action\PubsubSubscription\Get as GetSubscriptions;
 
 class Contact extends \Movim\Widget\Base
 {
-    private $_paging = 10;
+    private $_paging = 12;
 
     function load()
     {
-        $this->registerEvent('roster_updateitem_handle', 'onContactEdited', 'contacts');
         $this->registerEvent('vcard_get_handle', 'onVcardReceived', 'contacts');
         $this->registerEvent('vcard4_get_handle', 'onVcardReceived', 'contacts');
+        $this->registerEvent('pubsubsubscription_get_handle', 'onSubscriptions', 'contacts');
+
+        $this->addjs('contact.js');
     }
 
     public function onVcardReceived($packet)
     {
         $contact = $packet->content;
         $this->ajaxGetContact($contact->jid);
+        $this->ajaxRefreshSubscriptions($contact->jid);
     }
 
-    public function onContactEdited($packet)
+    public function onSubscriptions($packet)
     {
-        Notification::append(null, $this->__('edit.updated'));
+        $view = $this->tpl();
+
+        $items = [];
+        $id = new \Modl\ItemDAO;
+
+        foreach($packet->content as $subscription) {
+            $item = $id->getItem($subscription['server'], $subscription['node']);
+
+            if($item) {
+                array_push($items, $item);
+            }
+        }
+
+        $view->assign('subscriptions', $items);
+
+        RPC::call('MovimTpl.fill', '#contact_subscriptions', $view->draw('_contact_subscriptions', true));
     }
 
     function ajaxClear($page = 0)
     {
         $html = $this->prepareEmpty($page);
-        RPC::call('movim_fill', 'contact_widget', $html);
+
+        RPC::call('MovimUtils.pushState', $this->route('contact'));
+        RPC::call('MovimTpl.fill', '#contact_widget', $html);
     }
 
     function ajaxGetContact($jid, $page = 0)
@@ -39,16 +60,68 @@ class Contact extends \Movim\Widget\Base
 
         $html = $this->prepareContact($jid, $page);
 
+        $this->ajaxRefreshSubscriptions($jid);
+
+        RPC::call('MovimUtils.pushState', $this->route('contact', $jid));
+
+        RPC::call('MovimTpl.fill', '#contact_widget', $html);
+        RPC::call('MovimTpl.showPanel');
+
         $r = new GetItems;
         $r->setTo($jid)
           ->setNode('urn:xmpp:microblog:0')
           ->request();
+    }
 
-        RPC::call('movim_push_state', $this->route('contact', $jid));
+    function ajaxGetGallery($jid)
+    {
+        if(!$this->validateJid($jid)) return;
 
-        RPC::call('movim_fill', 'contact_widget', $html);
-        RPC::call('MovimTpl.showPanel');
-        RPC::call('MovimTpl.scrollHeaders');
+        $view = $this->tpl();
+
+        $pd = new \Modl\PostnDAO;
+        $view->assign('jid', $jid);
+        $view->assign('gallery', $pd->getGallery($jid, 0, 20));
+
+        RPC::call('MovimTpl.fill', '#contact_tab', $view->draw('_contact_gallery', true));
+    }
+
+    function ajaxGetBlog($jid)
+    {
+        if(!$this->validateJid($jid)) return;
+
+        $view = $this->tpl();
+
+        $pd = new \Modl\PostnDAO;
+        $view->assign('jid', $jid);
+        $view->assign('blog', $pd->getPublic($jid, 'urn:xmpp:microblog:0', 0, 18));
+
+        RPC::call('MovimTpl.fill', '#contact_tab', $view->draw('_contact_blog', true));
+    }
+
+    function ajaxGetDrawer($jid)
+    {
+        if(!$this->validateJid($jid)) return;
+
+        $tpl = $this->tpl();
+
+        $cd = new \Modl\ContactDAO;
+        $cr = $cd->getRosterItem($jid);
+
+        if(isset($cr)) {
+            if($cr->value != null) {
+                $tpl->assign('presence', getPresencesTxt()[$cr->value]);
+            }
+
+            $tpl->assign('contactr', $cr);
+            $tpl->assign('caps', $cr->getCaps());
+            $tpl->assign('clienttype', getClientTypes());
+        }
+
+        $c  = $cd->get($jid);
+        $tpl->assign('contact', $c);
+
+        Drawer::fill($tpl->draw('_contact_drawer', true));
     }
 
     function ajaxEditSubmit($form)
@@ -68,6 +141,15 @@ class Contact extends \Movim\Widget\Base
         $r = new GetItems;
         $r->setTo($jid)
           ->setNode('urn:xmpp:microblog:0')
+          ->request();
+    }
+
+    function ajaxRefreshSubscriptions($jid)
+    {
+        if(!$this->validateJid($jid)) return;
+
+        $r = new GetSubscriptions;
+        $r->setTo($jid)
           ->request();
     }
 
@@ -99,7 +181,7 @@ class Contact extends \Movim\Widget\Base
             $view->assign('submit',
                 $this->call(
                     'ajaxEditSubmit',
-                    "movim_form_to_json('manage')"));
+                    "MovimUtils.formToJson('manage')"));
             $view->assign('contact', $rl);
             $view->assign('groups', $groups);
         }
@@ -114,7 +196,7 @@ class Contact extends \Movim\Widget\Base
         $c = new Chats;
         $c->ajaxOpen($jid);
 
-        RPC::call('movim_redirect', $this->route('chat', $jid));
+        RPC::call('MovimUtils.redirect', $this->route('chat', $jid));
     }
 
     function ajaxDeleteContact($jid)
@@ -163,8 +245,9 @@ class Contact extends \Movim\Widget\Base
         if($users != null){
             $view = $this->tpl();
             $view->assign('pages', array_fill(0, (int)($count/$this->_paging), 'p'));
-            $view->assign('users', array_reverse($users));
+            $view->assign('users', $users);
             $view->assign('page', $page);
+            $view->assign('presencestxt', getPresencesTxt());
             return $view->draw('_contact_public', true);
         }
     }
@@ -178,7 +261,6 @@ class Contact extends \Movim\Widget\Base
 
         if($c == null
         || $c->created == null
-        //|| $c->isEmpty()
         || $c->isOld()) {
             if($c == null) {
                 $c = new \Modl\Contact;
@@ -191,71 +273,27 @@ class Contact extends \Movim\Widget\Base
 
         $view = $this->tpl();
 
-        $pd = new \Modl\PostnDAO;
-        $gallery = $pd->getGallery($jid, 0, 12);
-        $blog    = $pd->getPublic($jid, 'urn:xmpp:microblog:0', 0, 4);
-
-        $presencestxt = getPresencesTxt();
-
         $view->assign('page', $page);
-        $view->assign('edit',
-            $this->call(
-                'ajaxEditContact',
-                "'".echapJS($jid)."'"));
-        $view->assign('delete',
-            $this->call(
-                'ajaxDeleteContact',
-                "'".echapJS($jid)."'"));
 
         if(isset($c)) {
             $view->assign('mood', getMood());
+            $view->assign('clienttype', getClientTypes());
 
             $view->assign('contact', $c);
             $view->assign('contactr', $cr);
 
-            if( $cr->node != null
-                && $cr->ver != null
-                && $cr->node
-                && $cr->ver) {
-                $node = $cr->node.'#'.$cr->ver;
-
-                $cad = new \Modl\CapsDAO();
-                $caps = $cad->get($node);
-
-                if($cr->value != null) {
-                    $view->assign('presence', $presencestxt[$cr->value]);
-                }
-
-                if(
-                    isset($caps)
-                    && $caps->name != ''
-                    && $caps->type != '' ) {
-                    $clienttype = getClientTypes();
-
-                    $view->assign('caps', $caps);
-                    $view->assign('clienttype', $clienttype);
-                }
-            } else {
-                $view->assign('caps', null);
+            if($cr->value != null) {
+                $view->assign('presence', getPresencesTxt()[$cr->value]);
             }
 
-            $view->assign('gallery', $gallery);
-            $view->assign('blog', $blog);
-
-            $view->assign('chat',
-                $this->call(
-                    'ajaxChat',
-                    "'".echapJS($c->jid)."'"));
+            if(isset($cr)) {
+                $view->assign('caps', $cr->getCaps());
+            }
 
             return $view->draw('_contact', true);
         } elseif(isset($cr)) {
             $view->assign('contact', null);
             $view->assign('contactr', $cr);
-
-            $view->assign('chat',
-                $this->call(
-                    'ajaxChat',
-                    "'".echapJS($cr->jid)."'"));
 
             return $view->draw('_contact', true);
         } else {

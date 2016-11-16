@@ -40,9 +40,9 @@ class Chats extends \Movim\Widget\Base
         $contacts = $packet->content;
         if($contacts != null){
             $c = $contacts[0];
-            $chats = Cache::c('chats');
+            $chats = \Movim\Cache::c('chats');
             if(is_array($chats) &&  array_key_exists($c->jid, $chats)) {
-                RPC::call('movim_replace', $c->jid.'_chat_item', $this->prepareChat($c->jid));
+                RPC::call('MovimTpl.replace', '#' . cleanupId($c->jid.'_chat_item'), $this->prepareChat($c->jid));
                 RPC::call('Chats.refresh');
 
                 $n = new Notification;
@@ -70,13 +70,13 @@ class Chats extends \Movim\Widget\Base
             $jid = $from;
         }
 
-        RPC::call('movim_replace', $jid.'_chat_item', $this->prepareChat($jid, $message));
+        RPC::call('MovimTpl.replace', '#' . cleanupId($jid.'_chat_item'), $this->prepareChat($jid, $message));
         RPC::call('Chats.refresh');
     }
 
     function ajaxGet()
     {
-        RPC::call('movim_fill', 'chats_widget_list', $this->prepareChats());
+        RPC::call('MovimTpl.fill', '#chats_widget_list', $this->prepareChats());
         RPC::call('Chats.refresh');
     }
 
@@ -89,7 +89,7 @@ class Chats extends \Movim\Widget\Base
         $md = new \Modl\MessageDAO();
 
         if($jid == false) {
-            $chats = Cache::c('chats');
+            $chats = \Movim\Cache::c('chats');
 
             foreach($chats as $jid => $value) {
                 $messages = $md->getContact(echapJid($jid), 0, 1);
@@ -119,7 +119,7 @@ class Chats extends \Movim\Widget\Base
     {
         if(!$this->validateJid($jid)) return;
 
-        $chats = Cache::c('chats');
+        $chats = \Movim\Cache::c('chats');
         if($chats == null) $chats = [];
 
         unset($chats[$jid]);
@@ -130,7 +130,7 @@ class Chats extends \Movim\Widget\Base
 
             if($history) $this->ajaxGetHistory($jid);
 
-            Cache::c('chats', $chats);
+            \Movim\Cache::c('chats', $chats);
             RPC::call('Chats.prepend', $jid, $this->prepareChat($jid));
         }
     }
@@ -139,11 +139,11 @@ class Chats extends \Movim\Widget\Base
     {
         if(!$this->validateJid($jid)) return;
 
-        $chats = Cache::c('chats');
+        $chats = \Movim\Cache::c('chats');
         unset($chats[$jid]);
-        Cache::c('chats', $chats);
+        \Movim\Cache::c('chats', $chats);
 
-        RPC::call('movim_delete', $jid.'_chat_item');
+        RPC::call('MovimTpl.remove', '#' . cleanupId($jid . '_chat_item'));
 
         RPC::call('Chats.refresh');
         RPC::call('Chat.empty');
@@ -158,9 +158,9 @@ class Chats extends \Movim\Widget\Base
         $view = $this->tpl();
 
         $cd = new \Modl\ContactDAO;
-        $chats = Cache::c('chats');
+        $chats = \Movim\Cache::c('chats');
 
-        if(!isset($chats)) $chats = array();
+        if(!isset($chats)) $chats = [];
 
         $view->assign('chats', array_keys($chats));
         $view->assign('top', $cd->getTop(15));
@@ -180,12 +180,12 @@ class Chats extends \Movim\Widget\Base
         $contacts = $cd->getRosterSimple();
         $view->assign('contacts', $contacts);
 
-        RPC::call('movim_fill', 'add_extend', $view->draw('_chats_add_extend', true));
+        RPC::call('MovimTpl.fill', '#add_extend', $view->draw('_chats_add_extend', true));
     }
 
     function prepareChats()
     {
-        $chats = Cache::c('chats');
+        $chats = \Movim\Cache::c('chats');
 
         $view = $this->tpl();
 

@@ -33,36 +33,36 @@ class Bootstrap
             $this->startingSession();
             $this->loadLanguage();
         } else {
-            throw new Exception('Error loading Modl');
+            throw new \Exception('Error loading Modl');
         }
     }
 
     private function checkSystem()
     {
         $listWritableFile = array(
-            DOCUMENT_ROOT.'/log/logger.log',
-            DOCUMENT_ROOT.'/log/php.log',
-            DOCUMENT_ROOT.'/cache/test.tmp',
+            LOG_PATH.'/logger.log',
+            LOG_PATH.'/php.log',
+            CACHE_PATH.'/test.tmp',
         );
-        $errors = array();
+        $errors = [];
 
-        if(!is_writable(DOCUMENT_ROOT))
+        if(!file_exists(CACHE_PATH) && !@mkdir(CACHE_PATH)) {
+            $errors[] = 'Couldn\'t create directory cache';
+        }
+        if(!file_exists(LOG_PATH) && !@mkdir(LOG_PATH)) {
+            $errors[] = 'Couldn\'t create directory log';
+        }
+        if(!file_exists(CONFIG_PATH) && !@mkdir(CONFIG_PATH)) {
+            $errors[] = 'Couldn\'t create directory config';
+        }
+        if(!file_exists(USERS_PATH) && !@mkdir(USERS_PATH)) {
+            $errors[] = 'Couldn\'t create directory users';
+        } else {
+            touch(USERS_PATH.'/index.html');
+        }
+
+        if(!empty($errors) && !is_writable(DOCUMENT_ROOT)) {
             $errors[] = 'We\'re unable to write to folder '.DOCUMENT_ROOT.': check rights';
-        else {
-            if(!file_exists(DOCUMENT_ROOT.'/cache') && !@mkdir(DOCUMENT_ROOT.'/cache')) {
-                $errors[] = 'Couldn\'t create directory cache';
-            }
-            if(!file_exists(DOCUMENT_ROOT.'/log') && !@mkdir(DOCUMENT_ROOT.'/log')) {
-                $errors[] = 'Couldn\'t create directory log';
-            }
-            if(!file_exists(DOCUMENT_ROOT.'/config') && !@mkdir(DOCUMENT_ROOT.'/config')) {
-                $errors[] = 'Couldn\'t create directory config';
-            }
-            if(!file_exists(DOCUMENT_ROOT.'/users') && !@mkdir(DOCUMENT_ROOT.'/users')) {
-                $errors[] = 'Couldn\'t create directory users';
-            } else {
-                touch(DOCUMENT_ROOT.'/users/index.html');
-            }
         }
 
         foreach($listWritableFile as $fileName) {
@@ -88,6 +88,7 @@ class Bootstrap
         define('APP_NAME',      'movim');
         define('APP_VERSION',   $this->getVersion());
         define('APP_SECURED',   $this->isServerSecured());
+        define('SMALL_PICTURE_LIMIT', 320000);
 
         if(isset($_SERVER['HTTP_HOST'])) {
             define('BASE_HOST',     $_SERVER['HTTP_HOST']);
@@ -110,6 +111,7 @@ class Bootstrap
         define('LOCALES_PATH',  DOCUMENT_ROOT . '/locales/');
         define('CACHE_PATH',    DOCUMENT_ROOT . '/cache/');
         define('LOG_PATH',      DOCUMENT_ROOT . '/log/');
+        define('CONFIG_PATH',   DOCUMENT_ROOT . '/config/');
 
         define('VIEWS_PATH',    DOCUMENT_ROOT . '/app/views/');
         define('HELPERS_PATH',  DOCUMENT_ROOT . '/app/helpers/');
@@ -176,11 +178,8 @@ class Bootstrap
     {
         require_once(SYSTEM_PATH . "Session.php");
         require_once(SYSTEM_PATH . "Sessionx.php");
-        require_once(SYSTEM_PATH . "Cache.php");
-        require_once(SYSTEM_PATH . "Event.php");
         require_once(SYSTEM_PATH . "RPC.php");
         require_once(SYSTEM_PATH . "User.php");
-        require_once(SYSTEM_PATH . "Picture.php");
     }
 
     private function loadCommonLibraries()
@@ -189,8 +188,8 @@ class Bootstrap
         require_once(LIB_PATH . "XMPPtoForm.php");
 
         // SDPtoJingle and JingletoSDP lib :)
-        //require_once(LIB_PATH . "SDPtoJingle.php");
-        //require_once(LIB_PATH . "JingletoSDP.php");
+        require_once(LIB_PATH . "SDPtoJingle.php");
+        require_once(LIB_PATH . "JingletoSDP.php");
     }
 
     private function loadHelpers()
@@ -202,7 +201,6 @@ class Bootstrap
 
     private function loadDispatcher()
     {
-        require_once(SYSTEM_PATH . "Route.php");
         require_once(APP_PATH . "widgets/Notification/Notification.php");
     }
 
@@ -211,10 +209,10 @@ class Bootstrap
      */
     function loadLanguage()
     {
-        $user = new \User();
-        $user->reload();
+        $user = new \User;
+        $user->reload(true);
 
-        $cd = new \Modl\ConfigDAO();
+        $cd = new \Modl\ConfigDAO;
         $config = $cd->get();
 
         $l = \Movim\i18n\Locale::start();
@@ -245,19 +243,19 @@ class Bootstrap
     private function setTimezone()
     {
         // We set the default timezone to the server timezone
-        $cd = new \Modl\ConfigDAO();
+        $cd = new \Modl\ConfigDAO;
         $config = $cd->get();
 
         // And we set a global offset
         define('TIMEZONE_OFFSET', getTimezoneOffset($config->timezone));
 
-        date_default_timezone_set($config->timezone);
+        date_default_timezone_set("UTC");
     }
 
     private function setLogLevel()
     {
         // We set the default timezone to the server timezone
-        $cd = new \Modl\ConfigDAO();
+        $cd = new \Modl\ConfigDAO;
         $config = $cd->get();
 
         define('LOG_LEVEL', (int)$config->loglevel);
@@ -287,7 +285,7 @@ class Bootstrap
         if(file_exists(DOCUMENT_ROOT.'/config/db.inc.php')) {
             require DOCUMENT_ROOT.'/config/db.inc.php';
         } else {
-            throw new Exception('Cannot find config/db.inc.php file');
+            throw new \Exception('Cannot find config/db.inc.php file');
         }
 
         $db->setConnectionArray($conf);
@@ -310,9 +308,10 @@ class Bootstrap
     {
         // Return a list of interesting widgets to load (to save memory)
         return["Account","AccountNext","Ack","AdHoc","Avatar","Bookmark","Chat",
-        "Chats","Config","Contact","Dialog","Group","Groups","Header","Init",
-        "Login","LoginAnonymous","Menu","Notifs","Post","Presence","Publish",
-        "Rooms","Roster","Stickers","Upload","Vcard4"];
+        "Chats","Config","Contact","Dialog","Drawer","Group","Groups","Header",
+        "Init","Login","LoginAnonymous","Menu","Notifs","Post","Presence",
+        "Publish","Rooms","Roster","Stickers","Upload","Vcard4", "Visio",
+        "VisioLink"];
     }
 
     /**

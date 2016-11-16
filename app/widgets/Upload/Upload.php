@@ -2,11 +2,13 @@
 
 use Moxl\Xec\Action\Upload\Request;
 
-class Upload extends \Movim\Widget\Base {
+class Upload extends \Movim\Widget\Base
+{
     function load()
     {
         $this->addjs('upload.js');
         $this->registerEvent('upload_request_handle', 'onRequested');
+        $this->registerEvent('upload_request_errornotacceptable', 'onErrorNotAcceptable');
         header('Access-Control-Allow-Origin: *');
     }
 
@@ -14,6 +16,11 @@ class Upload extends \Movim\Widget\Base {
     {
         list($get, $put) = array_values($package->content);
         RPC::call('Upload.request', $get, $put);
+    }
+
+    function onErrorNotAcceptable()
+    {
+        Notification::append(null, $this->__('upload.error_filesize'));
     }
 
     function ajaxRequest()
@@ -36,6 +43,11 @@ class Upload extends \Movim\Widget\Base {
               ->setType($file->type)
               ->request();
         }
+    }
+
+    function ajaxFailed()
+    {
+        Notification::append(null, $this->__('upload.error_failed'));
     }
 
     function display()

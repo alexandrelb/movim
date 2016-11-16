@@ -8,19 +8,19 @@
             <li class="subheader"><p>{$c->__('page.news')}</p></li>
         {/if}
         {loop="$posts"}
-            <li onclick="movim_reload('{$c->route('news', $value->nodeid)}')">
+            <li onclick="MovimUtils.reload('{$c->route('news', [$value->origin, $value->node, $value->nodeid])}')">
                 {if="$value->title != null"}
                     <p class="line">{$value->title}</p>
                 {else}
                     <p class="line">{$c->__('menu.contact_post')}</p>
                 {/if}
                 <p>
-                    {if="$value->node == 'urn:xmpp:microblog:0'"}
+                    {if="$value->isMicroblog()"}
                         <a href="{$c->route('contact', $value->getContact()->jid)}">
                             <i class="zmdi zmdi-account"></i> {$value->getContact()->getTrueName()}
                         </a>
                     {else}
-                        <a href="{$c->route('group', array($value->origin, $value->node))}">
+                        <a href="{$c->route('group', [$value->origin, $value->node])}">
                             <i class="zmdi zmdi-pages"></i> {$value->node}
                         </a>
                     {/if}
@@ -28,32 +28,6 @@
                         {$value->published|strtotime|prepareDate:true,true}
                     </span>
                 </p>
-            </li>
-        {/loop}
-
-        {if="$contacts"}
-            <li class="subheader"><p>{$c->__('page.contacts')}</p></li>
-        {/if}
-        {loop="$contacts"}
-            <li>
-                {$url = $value->getPhoto('s')}
-                {if="$url"}
-                    <span class="primary icon bubble">
-                        <img src="{$url}">
-                    </span>
-                {else}
-                    <span class="primary icon bubble color {$valu->jid|stringToColor}">
-                        <i class="zmdi zmdi-account"></i>
-                    </span>
-                {/if}
-                <span class="control icon active gray" onclick="movim_reload('{$c->route('contact', $value->jid)}')">
-                    <i class="zmdi zmdi-account"></i>
-                </span>
-                <span class="control icon active gray" onclick="Search_ajaxChat('{$value->jid}')">
-                    <i class="zmdi zmdi-comment-text-alt"></i>
-                </span>
-                <p class="line">{$value->getTrueName()}</p>
-                <p class="line">{$value->jid}</p>
             </li>
         {/loop}
     </ul>

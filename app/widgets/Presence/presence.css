@@ -2,8 +2,11 @@ form[name=presence] ul {
     margin: 0 -2rem;
 }
 
-#presence_widget {
-    min-width: 20rem;
+
+@media screen and (min-width: 1024px) and (max-width: 1680px) {
+    ul#presence_widget li span.control {
+        display: none;
+    }
 }
 
 #presence_widget li {

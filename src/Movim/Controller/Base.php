@@ -1,17 +1,22 @@
 <?php
+
 namespace Movim\Controller;
 
 use Movim\Template\Builder;
+use Movim\Route;
 
-class Base {
+class Base
+{
     public $name = 'main';          // The name of the current page
+    public $unique = false;         // Only one WS for this page
     protected $session_only = false;// The page is protected by a session ?
     protected $raw = false;         // Display only the content ?
     protected $public = false;      // It's a public page
     protected $page;
 
-    function __construct() {
-        $this->page = new Builder;
+    function __construct()
+    {
+        $this->page = new Builder(new \User);
     }
 
     /**
@@ -44,7 +49,8 @@ class Base {
         }
     }
 
-    function checkSession() {
+    function checkSession()
+    {
         if($this->session_only) {
             $user = new \User;
 
@@ -54,12 +60,14 @@ class Base {
         }
     }
 
-    function redirect($page) {
-        $url = \Route::urlize($page);
+    function redirect($page, $params = false)
+    {
+        $url = Route::urlize($page, $params);
         header('Location: '. $url);
     }
 
-    function display() {
+    function display()
+    {
         $this->page->addScript('movim_hash.js');
         $this->page->addScript('movim_utils.js');
         $this->page->addScript('movim_base.js');
@@ -85,6 +93,7 @@ class Base {
         } else {
             $built = $content->build($this->name);
             $this->page->setContent($built);
+
             echo $this->page->build('page', $this->public);
         }
     }

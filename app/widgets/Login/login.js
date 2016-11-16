@@ -110,14 +110,14 @@ var Login = {
      * @brief Back to the choosing panel
      */
     toChoose : function() {
-        movim_add_class('#login_widget', 'choose');
+        MovimUtils.addClass('#login_widget', 'choose');
     },
 
     /**
      * @brief Back to the choosing panel
      */
     toForm : function() {
-        movim_remove_class('#login_widget', 'choose');
+        MovimUtils.removeClass('#login_widget', 'choose');
         // Empty login field
         document.querySelector('input#username').value = "";
     },
@@ -129,7 +129,11 @@ var Login = {
         Login.rememberSession(jid);
         localStorage.postStart = 1;
 
-        movim_redirect(url);
+        if(MovimUtils.urlParts().page != 'login') {
+            MovimUtils.reloadThis();
+        } else {
+            MovimUtils.redirect(url);
+        }
     },
 
     /**
@@ -146,9 +150,6 @@ MovimWebsocket.attach(function()
         document.querySelector('input#username').value = localStorage.username;
 
     Login.init();
-
-    // We hide the Websocket error
-    document.querySelector('#error_websocket').style.display = 'none';
 
     // We enable the form
     var inputs = document.querySelectorAll('#login_widget div input[disabled]');
@@ -178,7 +179,6 @@ movim_add_onload(function() {
     var login = document.querySelector('input#username');
     login.addEventListener('input', function() {
         if(this.value.indexOf('@') == -1) {
-            // TODO allow another server here
             document.querySelector('input#complete').value = this.value + '@' + Login.domain;
         } else {
             document.querySelector('input#complete').value = this.value;

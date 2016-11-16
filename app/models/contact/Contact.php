@@ -1,10 +1,13 @@
 <?php
 
-namespace modl;
+namespace Modl;
 
 use Respect\Validation\Validator;
 
-class Contact extends Model {
+use Movim\Picture;
+
+class Contact extends Model
+{
     public $jid;
 
     protected $fn;
@@ -71,7 +74,8 @@ class Contact extends Model {
     public $created;
     public $updated;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_struct = '
         {
             "jid" :
@@ -159,7 +163,8 @@ class Contact extends Model {
         parent::__construct();
     }
 
-    public function set($vcard, $jid) {
+    public function set($vcard, $jid)
+    {
         $this->__set('jid', \echapJid($jid));
 
         $validate_date = Validator::date('Y-m-d');
@@ -192,8 +197,9 @@ class Contact extends Model {
         $this->__set('description', (string)$vcard->vCard->DESC);
     }
 
-    public function createThumbnails() {
-        $p = new \Picture;
+    public function createThumbnails()
+    {
+        $p = new Picture;
         $p->fromBase($this->photobin);
         $p->set($this->jid);
 
@@ -202,23 +208,26 @@ class Contact extends Model {
         }
     }
 
-    public function isPhoto($jid = false, $x = false, $y = false) {
+    public function isPhoto($jid = false, $x = false, $y = false)
+    {
         if(!$jid) return false;
 
-        $p = new \Picture;
+        $p = new Picture;
         $url = $p->get($jid, $sizes[$size][0], $sizes[$size][1]);
         if($url) return $url;
 
         return false;
     }
 
-    public function getPhoto($size = 'l', $jid = false) {
+    public function getPhoto($size = 'l', $jid = false)
+    {
         if($size == 'email') {
             return BASE_URI.'cache/'.strtolower($this->jid).'_email.png';
         } else {
             $sizes = array(
                 'wall'  => array(1920, 1080),
                 'xxl'   => array(1280, 300),
+                'xl'    => array(512 , false),
                 'l'     => array(210 , false),
                 'm'     => array(120 , false),
                 's'     => array(50  , false),
@@ -227,12 +236,13 @@ class Contact extends Model {
             );
 
 
-            $p = new \Picture;
+            $p = new Picture;
             return $p->get($this->jid, $sizes[$size][0], $sizes[$size][1]);
         }
     }
 
-    public function setLocation($stanza) {
+    public function setLocation($stanza)
+    {
         $this->loclatitude      = (string)$stanza->items->item->geoloc->lat;
         $this->loclongitude     = (string)$stanza->items->item->geoloc->lon;
         $this->localtitude      = (int)$stanza->items->item->geoloc->alt;
@@ -250,7 +260,8 @@ class Contact extends Model {
                             strtotime((string)$stanza->items->item->geoloc->timestamp));
     }
 
-    public function setTune($stanza) {
+    public function setTune($stanza)
+    {
         $this->__set('tuneartist', (string)$stanza->items->item->tune->artist);
         $this->__set('tunelenght', (int)$stanza->items->item->tune->lenght);
         $this->__set('tunerating', (int)$stanza->items->item->tune->rating);
@@ -259,7 +270,8 @@ class Contact extends Model {
         $this->__set('tunetrack', (string)$stanza->items->item->tune->track);
     }
 
-    public function setVcard4($vcard) {
+    public function setVcard4($vcard)
+    {
         $validate_date = Validator::date('Y-m-d');
         if(isset($vcard->bday->date)
         && $validate_date->validate($vcard->bday->date))
@@ -300,7 +312,8 @@ class Contact extends Model {
         $this->__set('description', trim((string)$vcard->note->text));
     }
 
-    public function getPlace() {
+    public function getPlace()
+    {
         $place = null;
 
         if($this->loctext != '')
@@ -323,7 +336,8 @@ class Contact extends Model {
         return $place;
     }
 
-    public function getTrueName() {
+    public function getTrueName()
+    {
         $truename = '';
 
         if(isset($this->rostername))
@@ -363,19 +377,17 @@ class Contact extends Model {
         return $truename;
     }
 
-    function getAge() {
-        if(isset($this->date)
-            && $this->date != '0000-00-00T00:00:00+0000'
-            && $this->date != '1970-01-01 00:00:00'
-            && $this->date != '1970-01-01 01:00:00'
-            && $this->date != '1970-01-01T00:00:00+0000') {
+    function getAge()
+    {
+        if($this->isValidDate()) {
             $age = intval(substr(date('Ymd') - date('Ymd', strtotime($this->date)), 0, -4));
             if($age != 0)
                 return $age;
         }
     }
 
-    function getGender() {
+    function getGender()
+    {
         $gender = getGender();
 
         if($this->gender != null && $this->gender != 'N') {
@@ -383,7 +395,8 @@ class Contact extends Model {
         }
     }
 
-    function getMarital() {
+    function getMarital()
+    {
         $marital = getMarital();
 
         if($this->marital != null && $this->marital != 'none') {
@@ -411,8 +424,9 @@ class Contact extends Model {
         }
     }
 
-    function toRoster() {
-        return array(
+    function toRoster()
+    {
+        return [
             'jid'        => $this->jid,
             'rostername' => $this->rostername,
             'rostername' => $this->rostername,
@@ -420,10 +434,13 @@ class Contact extends Model {
             'status'     => $this->status,
             'resource'   => $this->resource,
             'value'      => $this->value
-            );
+            ];
     }
 
-    function isEmpty() {
+    function isEmpty()
+    {
+        $this->isValidDate();
+
         if($this->fn == null
         && $this->name == null
         && $this->date == null
@@ -436,7 +453,22 @@ class Contact extends Model {
         }
     }
 
-    function isOld() {
+    function isValidDate()
+    {
+        if(isset($this->date)
+            && $this->date != '0000-00-00T00:00:00+0000'
+            && $this->date != '1970-01-01 00:00:00'
+            && $this->date != '1970-01-01 01:00:00'
+            && $this->date != '1970-01-01T00:00:00+0000') {
+            return true;
+        } else {
+            $this->date = null;
+            return false;
+        }
+    }
+
+    function isOld()
+    {
         if(strtotime($this->updated) < mktime( // We update the 1 day old vcards
                                         gmdate("H"),
                                         gmdate("i")-10,
@@ -453,7 +485,8 @@ class Contact extends Model {
     }
 }
 
-class PresenceContact extends Contact {
+class PresenceContact extends Contact
+{
     // General presence informations
     protected $resource;
     protected $value;
@@ -477,7 +510,8 @@ class PresenceContact extends Contact {
     protected $mucaffiliation;
     protected $mucrole;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $this->_struct = '
@@ -513,14 +547,14 @@ class PresenceContact extends Contact {
 
 }
 
-class RosterContact extends Contact {
+class RosterContact extends Contact
+{
     protected $rostername;
     protected $groupname;
     protected $status;
     protected $resource;
     protected $value;
     protected $delay;
-    protected $chaton;
     protected $last;
     protected $publickey;
     protected $muc;
@@ -531,7 +565,8 @@ class RosterContact extends Contact {
     protected $category;
     //protected $type;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->_struct = "
         {
@@ -547,8 +582,6 @@ class RosterContact extends Contact {
                 {'type':'string', 'size':128, 'key':true },
             'value' :
                 {'type':'int',    'size':11, 'mandatory':true },
-            'chaton' :
-                {'type':'int',    'size':11 },
             'status' :
                 {'type':'text'},
             'node' :
@@ -571,7 +604,8 @@ class RosterContact extends Contact {
     }
 
     // This method is only use on the connection
-    public function setPresence($p) {
+    public function setPresence($p)
+    {
         $this->resource         = $p->resource;
         $this->value            = $p->value;
         $this->status           = $p->status;
@@ -581,5 +615,21 @@ class RosterContact extends Contact {
         $this->muc              = $p->muc;
         $this->mucaffiliation   = $p->mucaffiliation;
         $this->mucrole          = $p->mucrole;
+    }
+
+    public function getFullResource()
+    {
+        return $this->jid.'/'.$this->resource;
+    }
+
+    public function getCaps()
+    {
+        if(!empty($this->node)
+        && !empty($this->ver)) {
+            $node = $this->node.'#'.$this->ver;
+
+            $cad = new \Modl\CapsDAO;
+            return $cad->get($node);
+        }
     }
 }
